@@ -34,7 +34,43 @@
     .sub {
       color: #64748b;
       font-size: 14px;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
+    }
+
+    .clock-wrap {
+      background: #1e293b;
+      border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 16px;
+      padding: 20px 36px;
+      margin-bottom: 36px;
+      text-align: center;
+    }
+    .clock-time {
+      font-family: 'Courier New', monospace;
+      font-size: 48px;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: 4px;
+      text-shadow: 0 0 20px rgba(99,102,241,0.4);
+    }
+    .clock-time .blink {
+      animation: blink 1s step-end infinite;
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .clock-date {
+      font-size: 13px;
+      color: #64748b;
+      margin-top: 4px;
+    }
+    .clock-label {
+      font-size: 10px;
+      color: #475569;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-top: 6px;
     }
 
     .grid {
@@ -91,6 +127,12 @@
   <h1>워크숍 실습</h1>
   <p class="sub">Claude Code로 만든 결과물 모음</p>
 
+  <div class="clock-wrap">
+    <div class="clock-time" id="clock"></div>
+    <div class="clock-date" id="clock-date"></div>
+    <div class="clock-label">Korea Standard Time (KST)</div>
+  </div>
+
   <div class="grid">
     <a class="card" href="김비서-브리핑.html">
       <div class="card-icon">&#128188;</div>
@@ -125,6 +167,25 @@
   </div>
 
   <div class="footer">Claude Code Workshop &middot; 2026</div>
+
+  <script>
+    function updateClock() {
+      const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Asia/Seoul' }));
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').innerHTML = h + '<span class="blink">:</span>' + m + '<span class="blink">:</span>' + s;
+
+      const days = ['일', '월', '화', '수', '목', '금', '토'];
+      const y = now.getFullYear();
+      const mo = now.getMonth() + 1;
+      const d = now.getDate();
+      const day = days[now.getDay()];
+      document.getElementById('clock-date').textContent = y + '년 ' + mo + '월 ' + d + '일 (' + day + ')';
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  </script>
 
 </body>
 </html>
