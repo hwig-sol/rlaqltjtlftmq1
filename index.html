@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>워크숍 실습</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #818cf8, #c084fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .sub {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 40px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 720px;
+      width: 100%;
+    }
+
+    a.card {
+      background: #1e293b;
+      border: 1px solid rgba(99,102,241,0.15);
+      border-radius: 16px;
+      padding: 28px 24px;
+      text-decoration: none;
+      color: #e2e8f0;
+      transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+    }
+
+    a.card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,102,241,0.4);
+      box-shadow: 0 8px 32px rgba(99,102,241,0.15);
+    }
+
+    .card-icon {
+      font-size: 32px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .footer {
+      margin-top: 48px;
+      color: #475569;
+      font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>워크숍 실습</h1>
+  <p class="sub">Claude Code로 만든 결과물 모음</p>
+
+  <div class="grid">
+    <a class="card" href="김비서-브리핑.html">
+      <div class="card-icon">&#128188;</div>
+      <div class="card-title">김비서 브리핑</div>
+      <div class="card-desc">서울 날씨 + 회의 브리핑 + 오늘의 체크리스트</div>
+    </a>
+    <a class="card" href="대시보드.html">
+      <div class="card-icon">&#128202;</div>
+      <div class="card-title">업무 대시보드</div>
+      <div class="card-desc">매출, 할 일, 일정, 차트를 한눈에</div>
+    </a>
+    <a class="card" href="subtrac-분석보고서.html">
+      <div class="card-icon">&#128270;</div>
+      <div class="card-title">SubTrackr 분석 보고서</div>
+      <div class="card-desc">subtrac.kr 사이트 분석 및 SWOT</div>
+    </a>
+    <a class="card" href="독서교육-사이트-분석보고서.html">
+      <div class="card-icon">&#128218;</div>
+      <div class="card-title">독서교육 사이트 분석</div>
+      <div class="card-desc">독서교육 사이트 상세 분석 보고서</div>
+    </a>
+    <a class="card" href="독서교육-UI비교-요약.html">
+      <div class="card-icon">&#127912;</div>
+      <div class="card-title">독서교육 UI 비교</div>
+      <div class="card-desc">UI/UX 비교 요약 보고서</div>
+    </a>
+    <a class="card" href="마케팅-업무흐름.svg">
+      <div class="card-icon">&#128736;</div>
+      <div class="card-title">마케팅 업무 흐름</div>
+      <div class="card-desc">기획 → 제작 → 검토 → 배포 → 분석</div>
+    </a>
+  </div>
+
+  <div class="footer">Claude Code Workshop &middot; 2026</div>
+
+</body>
+</html>
