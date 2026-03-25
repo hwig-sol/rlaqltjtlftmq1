@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독서교육 플랫폼 비교 분석 보고서 - 웅진씽크빅 vs 한우리독서토론논술</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --wj-primary: #FF8C00;
+            --wj-secondary: #FFB347;
+            --hn-primary: #E8491D;
+            --hn-secondary: #FF6B4A;
+            --bg-dark: #1a1a2e;
+            --bg-card: #ffffff;
+            --text-primary: #2d2d2d;
+            --text-secondary: #666;
+            --accent-blue: #4A90D9;
+            --accent-green: #27AE60;
+            --border-light: #e8e8e8;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: #f5f5f8;
+            color: var(--text-primary);
+            line-height: 1.7;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: white;
+            padding: 80px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,140,0,0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(232,73,29,0.1) 0%, transparent 50%);
+            animation: rotate 20s linear infinite;
+        }
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .hero-content { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: linear-gradient(90deg, #FFB347, #FF6B4A);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .hero .subtitle {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 24px;
+        }
+        .hero .date-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 8px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Section */
+        .section {
+            padding: 60px 0;
+        }
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+        .section-desc {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 48px;
+            font-size: 1rem;
+        }
+
+        /* Overview Cards */
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+        .overview-card {
+            background: white;
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            border-top: 4px solid;
+            transition: transform 0.3s;
+        }
+        .overview-card:hover { transform: translateY(-4px); }
+        .overview-card.wj { border-top-color: var(--wj-primary); }
+        .overview-card.hn { border-top-color: var(--hn-primary); }
+        .overview-card .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: white;
+        }
+        .card-icon.wj { background: linear-gradient(135deg, var(--wj-primary), var(--wj-secondary)); }
+        .card-icon.hn { background: linear-gradient(135deg, var(--hn-primary), var(--hn-secondary)); }
+        .card-header h3 { font-size: 1.3rem; font-weight: 700; }
+        .card-header .url { font-size: 0.8rem; color: var(--text-secondary); }
+        .info-list { list-style: none; }
+        .info-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            gap: 12px;
+            font-size: 0.95rem;
+        }
+        .info-list li:last-child { border-bottom: none; }
+        .info-label {
+            font-weight: 600;
+            min-width: 80px;
+            color: var(--text-secondary);
+        }
+
+        /* Comparison Table */
+        .comparison-table-wrapper {
+            background: white;
+            border-radius: 20px;
+            padding: 36px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        thead th {
+            padding: 16px 20px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-bottom: 2px solid var(--border-light);
+        }
+        thead th:first-child { width: 180px; }
+        thead th:nth-child(2) { color: var(--wj-primary); }
+        thead th:nth-child(3) { color: var(--hn-primary); }
+        tbody td {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+        tbody tr:hover { background: #fafafa; }
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-wj { background: #FFF3E0; color: var(--wj-primary); }
+        .badge-hn { background: #FFEBEE; color: var(--hn-primary); }
+        .badge-blue { background: #E3F2FD; color: var(--accent-blue); }
+        .badge-green { background: #E8F5E9; color: var(--accent-green); }
+
+        /* Feature Cards */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.05);
+        }
+        .feature-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .feature-card p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Program Section */
+        .program-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        .program-col {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+        .program-col h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid;
+        }
+        .program-col.wj h3 { border-bottom-color: var(--wj-primary); color: var(--wj-primary); }
+        .program-col.hn h3 { border-bottom-color: var(--hn-primary); color: var(--hn-primary); }
+        .program-item {
+            padding: 12px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .program-item:last-child { border-bottom: none; }
+        .program-item .name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+        .program-item .desc {
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        /* Radar/Score Section */
+        .score-section {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            padding: 60px 0;
+            color: white;
+        }
+        .score-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        .score-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 20px;
+            padding: 32px;
+        }
+        .score-card h3 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .score-bar {
+            margin-bottom: 16px;
+        }
+        .score-bar .bar-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+        .score-bar .bar-track {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .score-bar .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease;
+        }
+        .bar-fill.wj { background: linear-gradient(90deg, var(--wj-primary), var(--wj-secondary)); }
+        .bar-fill.hn { background: linear-gradient(90deg, var(--hn-primary), var(--hn-secondary)); }
+
+        /* Strengths/Weaknesses */
+        .sw-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+        .sw-card {
+            background: white;
+            border-radius: 20px;
+            padding: 32px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+        }
+        .sw-card h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+        .sw-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 0.9rem;
+        }
+        .sw-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .sw-icon.plus { background: #E8F5E9; color: var(--accent-green); }
+        .sw-icon.minus { background: #FFF3E0; color: #E67E22; }
+
+        /* Conclusion */
+        .conclusion {
+            background: white;
+            border-radius: 20px;
+            padding: 48px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+            margin-top: 48px;
+        }
+        .conclusion h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .conclusion-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+        .conclusion-item {
+            padding: 24px;
+            border-radius: 14px;
+            background: #f8f9fa;
+        }
+        .conclusion-item h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        .conclusion-item p {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* UX Metrics */
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .metric-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        }
+        .metric-card .metric-value {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .metric-card .metric-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .metric-card.wj .metric-value { color: var(--wj-primary); }
+        .metric-card.hn .metric-value { color: var(--hn-primary); }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 1.8rem; }
+            .overview-grid, .program-columns, .score-grid, .sw-grid, .conclusion-grid { grid-template-columns: 1fr; }
+            .feature-grid { grid-template-columns: 1fr; }
+            .metrics-row { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>독서교육 플랫폼 비교 분석</h1>
+        <p class="subtitle">웅진씽크빅(북클럽) vs 한우리독서토론논술 — 사이트 구조, UX, 교육 프로그램 종합 비교</p>
+        <span class="date-badge">분석일: 2026년 3월 11일</span>
+    </div>
+</section>
+
+<!-- 1. 기업 개요 -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">기업 개요</h2>
+        <p class="section-desc">두 플랫폼의 기본 정보와 사업 방향성을 비교합니다</p>
+
+        <div class="overview-grid">
+            <div class="overview-card wj">
+                <div class="card-header">
+                    <div class="card-icon wj">W</div>
+                    <div>
+                        <h3>웅진씽크빅</h3>
+                        <span class="url">wjthinkbig.com</span>
+                    </div>
+                </div>
+                <ul class="info-list">
+                    <li><span class="info-label">대표</span>윤승현</li>
+                    <li><span class="info-label">본사</span>경기도 파주시 회동길 20 / 서울 중구 청계천로 24</li>
+                    <li><span class="info-label">사업영역</span>AI 학습(스마트올), 방문학습, 독서멤버십(북클럽), 전집/도서</li>
+                    <li><span class="info-label">대표 브랜드</span>웅진씽크빅, 웅진스마트올, 웅진북클럽</li>
+                    <li><span class="info-label">고객센터</span>1577-1500 (평일 09:00~18:00)</li>
+                    <li><span class="info-label">핵심 키워드</span><span class="badge badge-wj">AI학습</span> <span class="badge badge-wj">에듀테크</span> <span class="badge badge-wj">디지털콘텐츠</span></li>
+                </ul>
+            </div>
+
+            <div class="overview-card hn">
+                <div class="card-header">
+                    <div class="card-icon hn">H</div>
+                    <div>
+                        <h3>한우리독서토론논술</h3>
+                        <span class="url">hanuribook.com</span>
+                    </div>
+                </div>
+                <ul class="info-list">
+                    <li><span class="info-label">대표</span>김희선</li>
+                    <li><span class="info-label">본사</span>서울 영등포구 당산로27길 16 / 서울 서초구 방배로 181</li>
+                    <li><span class="info-label">사업영역</span>독서토론논술 교육, 방문수업, 추천도서 큐레이션</li>
+                    <li><span class="info-label">운영사</span>한우리열린교육 (주)디지털대성</li>
+                    <li><span class="info-label">고객센터</span>02-6276-2666 (평일 09:00~18:00)</li>
+                    <li><span class="info-label">핵심 키워드</span><span class="badge badge-hn">독서토론</span> <span class="badge badge-hn">논술</span> <span class="badge badge-hn">대면수업</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Key Metrics -->
+        <div class="metrics-row">
+            <div class="metric-card wj">
+                <div class="metric-value">62건</div>
+                <div class="metric-label">웅진 에듀테크 특허</div>
+            </div>
+            <div class="metric-card wj">
+                <div class="metric-value">500억+</div>
+                <div class="metric-label">웅진 40년 누적 학습 데이터</div>
+            </div>
+            <div class="metric-card hn">
+                <div class="metric-value">35년</div>
+                <div class="metric-label">한우리 교육 역사</div>
+            </div>
+            <div class="metric-card hn">
+                <div class="metric-value">전국</div>
+                <div class="metric-label">한우리 센터 네트워크</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 2. 사이트 구조 비교 -->
+<section class="section" style="background: #f0f1f5;">
+    <div class="container">
+        <h2 class="section-title">사이트 구조 및 UX 비교</h2>
+        <p class="section-desc">네비게이션, 콘텐츠 구성, 사용자 경험 관점에서 비교합니다</p>
+
+        <div class="comparison-table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>비교 항목</th>
+                        <th>웅진씽크빅 (wjthinkbig.com)</th>
+                        <th>한우리독서토론논술 (hanuribook.com)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GNB 메뉴</strong></td>
+                        <td>브랜드 / 제품·서비스 / 이벤트·혜택 / 센터찾기 / 고객지원</td>
+                        <td>프로그램 / 수업상담 / 센터찾기 / 한우리 선생님 / 추천도서 / 회사소개 / 고객센터</td>
+                    </tr>
+                    <tr>
+                        <td><strong>메인 히어로</strong></td>
+                        <td>6장 슬라이드 배너 (캠페인, 이벤트, 프로모션 중심)</td>
+                        <td>읽기/쓰기/말하기 핵심역량 애니메이션 + 교육철학 스토리텔링</td>
+                    </tr>
+                    <tr>
+                        <td><strong>검색 기능</strong></td>
+                        <td>
+                            <span class="badge badge-green">고급</span> 학습/전집 구분, 나이별·과목별 맞춤검색, 추천검색어 제공
+                        </td>
+                        <td>
+                            <span class="badge badge-blue">기본</span> 별도 검색 기능 없음 (메뉴 기반 탐색)
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>CTA (전환 유도)</strong></td>
+                        <td>체험/상담 신청 팝업 (하단 고정 바), 학습형태 선택(혼자/방문), 본인인증 포함</td>
+                        <td>상담신청 플로팅 배너, 하단 고정 바, N페이 상품권 프로모션</td>
+                    </tr>
+                    <tr>
+                        <td><strong>디자인 톤</strong></td>
+                        <td>밝고 컬러풀, 아이콘 기반 퀵메뉴, 모바일 퍼스트 UI</td>
+                        <td>주황색 중심 강렬한 색감, 스토리텔링형 스크롤, 감성적 메시지</td>
+                    </tr>
+                    <tr>
+                        <td><strong>반응형</strong></td>
+                        <td>모바일/데스크탑 완전 반응형, 하단 탭 네비게이션 구현</td>
+                        <td>반응형 지원, 상단 고정 네비게이션</td>
+                    </tr>
+                    <tr>
+                        <td><strong>하단 정보</strong></td>
+                        <td>Family Site 링크, SNS(페북/유튜브/블로그/인스타), ISMS 인증</td>
+                        <td>몰입독서/추천도서/유튜브/인스타 바로가기, ISMS 인증</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- 3. 교육 프로그램 비교 -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">교육 프로그램 비교</h2>
+        <p class="section-desc">두 플랫폼이 제공하는 학습 프로그램과 교육 방식의 차이</p>
+
+        <div class="program-columns">
+            <div class="program-col wj">
+                <h3>웅진씽크빅 제품·서비스</h3>
+
+                <div class="program-item">
+                    <div class="name">웅진씽크빅 학습지 <span class="badge badge-wj">방문학습</span></div>
+                    <div class="desc">원하는 과목만 선택 학습. 방문/센터/화상/클래스 등 다양한 관리 서비스. 디지털+지면 병행</div>
+                </div>
+                <div class="program-item">
+                    <div class="name">웅진스마트올 <span class="badge badge-wj">AI학습</span></div>
+                    <div class="desc">전 과목 종합 학습. 태블릿 하나로 전 과목 AI 맞춤학습. 혼자학습/방문학습 선택</div>
+                </div>
+                <div class="program-item">
+                    <div class="name">웅진북클럽 <span class="badge badge-wj">독서멤버십</span></div>
+                    <div class="desc">독서 멤버십 서비스. 150개 출판사 도서 제공. 전집 구매와 학습 통합</div>
+                </div>
+                <div class="program-item">
+                    <div class="name">대상 연령</div>
+                    <div class="desc">출산예정~중등 이상 (전 연령대 커버)</div>
+                </div>
+                <div class="program-item">
+                    <div class="name">과목</div>
+                    <div class="desc">국어, 수학, 영어, 과학, 사회/역사, 독서/논술, 미술, 창의, 종합학습</div>
+                </div>
+            </div>
+
+            <div class="program-col hn">
+                <h3>한우리 교육 프로그램</h3>
+
+                <div class="program-item">
+                    <div class="name">정규 프로그램 <span class="badge badge-hn">유아~고등</span></div>
+                    <div class="desc">
+                        유아: 꿈꾸는 새싹 / 초등1-2: 어휘리더 / 초등3-4: 독서리더 / 초등5-6: 논리리더 / 중등: 소크라테스 / 고등: 소클고등문학
+                    </div>
+                </div>
+                <div class="program-item">
+                    <div class="name">심화 프로그램 <span class="badge badge-hn">초등3~6</span></div>
+                    <div class="desc">
+                        초3: 과학탐탐 / 초4: 똑똑한국사 / 초5: 세계문화지리 / 초6: 세계사
+                    </div>
+                </div>
+                <div class="program-item">
+                    <div class="name">단기 특강 <span class="badge badge-hn">주제별</span></div>
+                    <div class="desc">역사(한국사봄/한국사람), 문학(소통과교감/교과문학맥잡기), 비문학(똑독해), 통합사회, 한글</div>
+                </div>
+                <div class="program-item">
+                    <div class="name">교육 방식</div>
+                    <div class="desc">전문 교사 방문수업, 읽기→토론→글쓰기 3단계 체계, 매 수업 글쓰기</div>
+                </div>
+                <div class="program-item">
+                    <div class="name">부가 서비스</div>
+                    <div class="desc">추천도서 큐레이션, 픽마이북, 몰입독서 프로그램, 읽기 수준 진단</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 4. 점수 비교 -->
+<section class="score-section">
+    <div class="container">
+        <h2 class="section-title" style="color:white;">항목별 평가</h2>
+        <p class="section-desc" style="color:rgba(255,255,255,0.6);">10점 만점 기준, 사이트 분석 결과에 따른 종합 평가</p>
+
+        <div class="score-grid">
+            <div class="score-card">
+                <h3 style="color: var(--wj-secondary);">웅진씽크빅</h3>
+
+                <div class="score-bar">
+                    <div class="bar-label"><span>디지털/AI 기술력</span><span>9.5</span></div>
+                    <div class="bar-track"><div class="bar-fill wj" style="width:95%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>제품 다양성</span><span>9.0</span></div>
+                    <div class="bar-track"><div class="bar-fill wj" style="width:90%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>UX/UI 완성도</span><span>9.0</span></div>
+                    <div class="bar-track"><div class="bar-fill wj" style="width:90%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>검색/맞춤 기능</span><span>9.5</span></div>
+                    <div class="bar-track"><div class="bar-fill wj" style="width:95%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>독서/논술 전문성</span><span>7.0</span></div>
+                    <div class="bar-track"><div class="bar-fill wj" style="width:70%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>교육 철학 전달</span><span>6.5</span></div>
+                    <div class="bar-track"><div class="bar-fill wj" style="width:65%"></div></div>
+                </div>
+            </div>
+
+            <div class="score-card">
+                <h3 style="color: var(--hn-secondary);">한우리독서토론논술</h3>
+
+                <div class="score-bar">
+                    <div class="bar-label"><span>독서/논술 전문성</span><span>9.5</span></div>
+                    <div class="bar-track"><div class="bar-fill hn" style="width:95%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>교육 철학 전달</span><span>9.0</span></div>
+                    <div class="bar-track"><div class="bar-fill hn" style="width:90%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>프로그램 체계성</span><span>9.0</span></div>
+                    <div class="bar-track"><div class="bar-fill hn" style="width:90%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>교사 전문성 강조</span><span>8.5</span></div>
+                    <div class="bar-track"><div class="bar-fill hn" style="width:85%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>디지털/AI 기술력</span><span>5.0</span></div>
+                    <div class="bar-track"><div class="bar-fill hn" style="width:50%"></div></div>
+                </div>
+                <div class="score-bar">
+                    <div class="bar-label"><span>UX/UI 완성도</span><span>7.0</span></div>
+                    <div class="bar-track"><div class="bar-fill hn" style="width:70%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 5. 핵심 차별점 -->
+<section class="section">
+    <div class="container">
+        <h2 class="section-title">핵심 차별점 분석</h2>
+        <p class="section-desc">각 플랫폼이 강조하는 고유한 가치와 접근 방식</p>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h4>🤖 웅진: AI 기반 맞춤학습</h4>
+                <p>실리콘밸리 개발 AI 학습코칭으로 정답률 10% 향상 효과. KAIST 연구팀 논문 기반의 데이터 드리븐 교육 접근. 업계 최다 62건의 에듀테크 특허 보유.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📚 한우리: 읽기-토론-쓰기 체계</h4>
+                <p>35년간 일관된 독서교육 철학. 매 수업 긴 글쓰기, 다양한 갈래별 글쓰기 훈련. "무작정 많이 읽는 것은 진짜 읽기가 아닙니다"라는 깊이 있는 독서 강조.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🎯 웅진: 전 과목 종합 플랫폼</h4>
+                <p>국어~미술까지 전 과목 커버. AR/메타버스 등 첨단 기술 접목. 독서와 학습을 하나의 생태계에서 통합 제공.</p>
+            </div>
+            <div class="feature-card">
+                <h4>👩‍🏫 한우리: 전문교사 대면수업</h4>
+                <p>전국 센터 네트워크와 전문 교사진. 선생님과 함께 읽고, 토론하고, 의견을 나누는 소통 중심 교육. 지도교사 입문과정까지 체계적 양성.</p>
+            </div>
+            <div class="feature-card">
+                <h4>📱 웅진: 디지털 우선 전략</h4>
+                <p>스마트올 태블릿 기반 학습, 500억 건 학습 빅데이터 활용, 5년 연속 AI 학습 부문 대상. 혼자학습(유선관리)과 방문학습 병행 가능.</p>
+            </div>
+            <div class="feature-card">
+                <h4>🧠 한우리: 사고력 확장 중심</h4>
+                <p>"틀린 답이 없습니다" — 자유로운 토론 환경. 전문 연구원이 설계한 사고 확장 질문. 연결성 있는 긴 글쓰기로 논리적 사고력 훈련.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- 6. 장단점 -->
+<section class="section" style="background: #f0f1f5;">
+    <div class="container">
+        <h2 class="section-title">장점 및 보완점</h2>
+        <p class="section-desc">실제 사이트 분석을 통해 확인된 각 플랫폼의 강점과 개선 여지</p>
+
+        <div class="sw-grid">
+            <div class="sw-card">
+                <h3 style="color: var(--wj-primary);">웅진씽크빅</h3>
+                <div class="sw-item">
+                    <div class="sw-icon plus">+</div>
+                    <div>나이·과목별 맞춤 검색 기능이 매우 정교하여 원하는 학습/도서를 빠르게 탐색 가능</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon plus">+</div>
+                    <div>모바일 퍼스트 UI로 하단 탭 네비게이션, 체험 신청 플로우가 매끄러움</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon plus">+</div>
+                    <div>3개 브랜드(씽크빅/스마트올/북클럽)를 하나의 사이트에서 통합 안내</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon minus">!</div>
+                    <div>이벤트/프로모션 배너가 많아 핵심 교육 콘텐츠보다 마케팅 중심으로 느껴질 수 있음</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon minus">!</div>
+                    <div>교육 철학이나 학습 방법론에 대한 깊이 있는 콘텐츠가 메인에서 부각되지 않음</div>
+                </div>
+            </div>
+
+            <div class="sw-card">
+                <h3 style="color: var(--hn-primary);">한우리독서토론논술</h3>
+                <div class="sw-item">
+                    <div class="sw-icon plus">+</div>
+                    <div>읽기·쓰기·말하기 3대 핵심역량을 메인에서 인상 깊게 스토리텔링</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon plus">+</div>
+                    <div>정규/심화/특강으로 체계적으로 세분화된 프로그램 구조</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon plus">+</div>
+                    <div>35년 교육 철학과 바른 길에 대한 확고한 메시지가 신뢰감 형성</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon minus">!</div>
+                    <div>사이트 내 검색 기능이 부재하여 원하는 정보 탐색에 불편함</div>
+                </div>
+                <div class="sw-item">
+                    <div class="sw-icon minus">!</div>
+                    <div>디지털/AI 학습 도구가 상대적으로 부족하며, 온라인 학습 기능이 제한적</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 종합 결론 -->
+        <div class="conclusion">
+            <h3>종합 결론 및 추천</h3>
+            <div class="conclusion-grid">
+                <div class="conclusion-item" style="border-left: 4px solid var(--wj-primary);">
+                    <h4 style="color: var(--wj-primary);">웅진씽크빅이 적합한 경우</h4>
+                    <p>전 과목 종합 학습이 필요하거나, AI/디지털 기반 자기주도 학습을 선호하는 가정. 독서와 학습을 하나의 플랫폼에서 관리하고 싶은 경우. 태블릿 기반의 체계적인 커리큘럼과 다양한 관리 서비스(방문/화상/센터) 중 선택하고 싶은 학부모에게 추천.</p>
+                </div>
+                <div class="conclusion-item" style="border-left: 4px solid var(--hn-primary);">
+                    <h4 style="color: var(--hn-primary);">한우리가 적합한 경우</h4>
+                    <p>독서·토론·논술에 특화된 깊이 있는 교육을 원하는 가정. 전문 교사의 대면 지도와 또래 토론 경험을 중시하는 경우. 글쓰기 능력과 비판적 사고력을 체계적으로 키우고 싶은 학부모에게 추천. 단, 디지털 학습보다는 전통적 교육 방식을 선호하는 경우 더 적합.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>본 보고서는 2026년 3월 11일 기준 각 사이트 접속 및 공개 정보를 바탕으로 작성되었습니다.</p>
+    <p style="margin-top:8px;">웅진씽크빅(wjthinkbig.com) | 한우리독서토론논술(hanuribook.com)</p>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>업무 대시보드</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #f0f2f5;
+    --surface: #ffffff;
+    --surface2: #f7f8fa;
+    --border: #e2e5eb;
+    --text: #1e1e2e;
+    --text-dim: #6b7280;
+    --accent: #6366f1;
+    --accent2: #4f46e5;
+    --green: #16a34a;
+    --green-bg: rgba(22,163,74,0.08);
+    --orange: #ea580c;
+    --orange-bg: rgba(234,88,12,0.08);
+    --pink: #db2777;
+    --pink-bg: rgba(219,39,119,0.08);
+    --cyan: #0891b2;
+    --cyan-bg: rgba(8,145,178,0.08);
+    --red: #dc2626;
+    --red-bg: rgba(220,38,38,0.08);
+    --yellow: #ca8a04;
+  }
+
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 24px;
+  }
+
+  /* 헤더 */
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed, #db2777);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header-date {
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .header-date span {
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  /* 그리드 */
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .grid .full { grid-column: 1 / -1; }
+
+  /* 카드 */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 16px 16px 0 0;
+  }
+  .card.purple::before { background: linear-gradient(90deg, #6366f1, #a855f7); }
+  .card.green::before { background: linear-gradient(90deg, #22c55e, #06b6d4); }
+  .card.orange::before { background: linear-gradient(90deg, #f97316, #eab308); }
+  .card.pink::before { background: linear-gradient(90deg, #ec4899, #f43f5e); }
+  .card.cyan::before { background: linear-gradient(90deg, #06b6d4, #6366f1); }
+
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  /* 매출 요약 카드 상단 */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+  .stat-box {
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 18px;
+    text-align: center;
+    border: 1px solid var(--border);
+    transition: transform 0.2s;
+  }
+  .stat-box:hover { transform: translateY(-2px); }
+  .stat-box .label {
+    font-size: 12px;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+  }
+  .stat-box .value {
+    font-size: 22px;
+    font-weight: 700;
+  }
+  .stat-box .sub {
+    font-size: 11px;
+    margin-top: 4px;
+    font-weight: 500;
+  }
+  .stat-box .sub.up { color: var(--green); }
+  .stat-box .sub.down { color: var(--red); }
+
+  /* 할 일 */
+  .todo-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .todo-input-row input[type="text"] {
+    flex: 1;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .todo-input-row input[type="text"]:focus {
+    border-color: var(--accent);
+  }
+  .todo-input-row select {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    color: var(--text);
+    font-size: 13px;
+    font-family: inherit;
+    outline: none;
+    cursor: pointer;
+  }
+  .todo-input-row button {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .todo-input-row button:hover { background: #4f46e5; }
+
+  .todo-list { list-style: none; }
+  .todo-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-bottom: 6px;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+  .todo-item:hover { background: var(--surface2); }
+  .todo-item.done .todo-text {
+    text-decoration: line-through;
+    color: var(--text-dim);
+  }
+  .todo-item input[type="checkbox"] {
+    appearance: none;
+    width: 20px; height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .todo-item input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .todo-item input[type="checkbox"]:checked::after {
+    content: '✓';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .todo-text { font-size: 13px; flex: 1; }
+  .todo-assignee {
+    font-size: 11px;
+    color: var(--text-dim);
+    background: var(--surface2);
+    padding: 2px 8px;
+    border-radius: 6px;
+  }
+  .priority-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .priority-high { background: var(--red-bg); color: var(--red); }
+  .priority-mid { background: var(--orange-bg); color: var(--orange); }
+  .priority-low { background: var(--cyan-bg); color: var(--cyan); }
+  .todo-delete {
+    background: none; border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.15s;
+    padding: 2px 4px;
+  }
+  .todo-item:hover .todo-delete { opacity: 1; }
+  .todo-delete:hover { color: var(--red); }
+
+  /* 프로젝트 진행률 */
+  .project-item {
+    margin-bottom: 18px;
+  }
+  .project-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+  .project-info .pct { font-weight: 700; }
+  .progress-bar {
+    height: 10px;
+    background: var(--surface2);
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 1s ease;
+  }
+
+  /* 주간 일정 */
+  .week-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+  }
+  .day-col {
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 14px 12px;
+    border: 1px solid var(--border);
+    min-height: 140px;
+    transition: border-color 0.2s;
+  }
+  .day-col.today {
+    border-color: var(--accent);
+    box-shadow: 0 0 20px rgba(99,102,241,0.15);
+  }
+  .day-header {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .day-header .day-name { color: var(--text-dim); }
+  .day-header .day-date { color: var(--text); font-size: 14px; }
+  .day-col.today .day-header .day-name { color: var(--accent2); }
+  .event {
+    font-size: 11px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+    border-left: 3px solid;
+  }
+  .event.purple { background: rgba(99,102,241,0.08); border-color: #6366f1; color: #4338ca; }
+  .event.pink { background: rgba(219,39,119,0.08); border-color: #db2777; color: #9d174d; }
+  .event.green { background: rgba(22,163,74,0.08); border-color: #16a34a; color: #15803d; }
+  .event.orange { background: rgba(234,88,12,0.08); border-color: #ea580c; color: #c2410c; }
+  .event.cyan { background: rgba(8,145,178,0.08); border-color: #0891b2; color: #0e7490; }
+
+  /* 매출 차트 */
+  .chart-area {
+    display: flex;
+    gap: 24px;
+    align-items: flex-end;
+  }
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    height: 160px;
+    flex: 1;
+    padding: 0 8px;
+  }
+  .bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .bar {
+    width: 100%;
+    max-width: 48px;
+    border-radius: 6px 6px 2px 2px;
+    transition: height 1s ease;
+    position: relative;
+    cursor: pointer;
+  }
+  .bar:hover { opacity: 0.85; }
+  .bar-label {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    text-align: center;
+  }
+  .bar-value {
+    font-size: 10px;
+    color: var(--text);
+    margin-bottom: 4px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* 지역별 도넛 범례 */
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 140px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 4px;
+    flex-shrink: 0;
+  }
+  .legend-value {
+    margin-left: auto;
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  /* 행사 배너 */
+  .event-banner {
+    background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+    border-radius: 12px;
+    padding: 18px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    border: 1px solid #c7d2fe;
+  }
+  .event-banner-text h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #312e81;
+    margin-bottom: 4px;
+  }
+  .event-banner-text p {
+    font-size: 12px;
+    color: #4f46e5;
+  }
+  .event-banner-btn {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .event-banner-btn:hover { background: #4f46e5; }
+
+  /* 달력 */
+  .calendar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: visible;
+  }
+  .calendar-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #6366f1, #a855f7, #ec4899, #f97316, #22c55e);
+    border-radius: 16px 16px 0 0;
+    pointer-events: none;
+  }
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .calendar-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .calendar-nav {
+    display: flex;
+    gap: 6px;
+  }
+  .calendar-nav button {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .calendar-nav button:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+  .cal-day-name {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-dim);
+    padding: 8px 0;
+  }
+  .cal-day-name.sun { color: var(--red); }
+  .cal-day-name.sat { color: #6366f1; }
+  .cal-cell {
+    text-align: center;
+    padding: 8px 4px;
+    border-radius: 8px;
+    font-size: 13px;
+    cursor: default;
+    transition: all 0.15s;
+    position: relative;
+  }
+  .cal-cell:hover { background: var(--surface2); }
+  .cal-cell.other-month { color: #c9cdd6; }
+  .cal-cell.today {
+    background: var(--accent);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+    box-shadow: 0 0 12px rgba(99,102,241,0.3);
+  }
+  .cal-cell.today:hover { background: #4f46e5; }
+  .cal-cell.sun { color: var(--red); }
+  .cal-cell.sat { color: #6366f1; }
+  .cal-cell.other-month.sun,
+  .cal-cell.other-month.sat { color: #c9cdd6; }
+  .cal-cell.has-event::after {
+    content: '';
+    display: block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--pink);
+    margin: 2px auto 0;
+  }
+  .cal-cell.today.has-event::after {
+    background: #fff;
+  }
+  .cal-cell.has-event { cursor: pointer; }
+
+  /* 달력 팝업 */
+  .cal-popup {
+    position: absolute;
+    z-index: 100;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    min-width: 200px;
+    max-width: 260px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+    animation: popIn 0.15s ease;
+    pointer-events: auto;
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .cal-popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cal-popup-header span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+  .cal-popup-close {
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0 2px;
+    line-height: 1;
+  }
+  .cal-popup-close:hover { color: var(--red); }
+  .cal-popup-item {
+    font-size: 12px;
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    border-left: 3px solid;
+  }
+  .cal-popup-item.purple { background: rgba(99,102,241,0.08); border-color: #6366f1; color: #4338ca; }
+  .cal-popup-item.pink { background: rgba(219,39,119,0.08); border-color: #db2777; color: #9d174d; }
+  .cal-popup-item.green { background: rgba(22,163,74,0.08); border-color: #16a34a; color: #15803d; }
+  .cal-popup-item.orange { background: rgba(234,88,12,0.08); border-color: #ea580c; color: #c2410c; }
+  .cal-popup-item.cyan { background: rgba(8,145,178,0.08); border-color: #0891b2; color: #0e7490; }
+
+  /* 반응형 */
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .week-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="header">
+  <h1>📊 업무 대시보드</h1>
+  <div class="header-date">
+    <span id="today-display"></span> &nbsp;|&nbsp; 마케팅팀
+  </div>
+</div>
+
+<!-- 달력 -->
+<div class="calendar-card">
+  <div class="calendar-header">
+    <h2 id="cal-title"></h2>
+    <div class="calendar-nav">
+      <button onclick="changeMonth(-1)">◀</button>
+      <button onclick="goToday()" style="width:auto;padding:0 12px;font-size:12px;font-weight:600;">오늘</button>
+      <button onclick="changeMonth(1)">▶</button>
+    </div>
+  </div>
+  <div class="calendar-grid" id="calendar-grid"></div>
+</div>
+
+<!-- 매출 요약 상단 -->
+<div class="stats-row" id="stats-row"></div>
+
+<!-- 메인 그리드 -->
+<div class="grid">
+
+  <!-- 할 일 -->
+  <div class="card purple">
+    <div class="card-title">
+      <div class="icon" style="background:rgba(99,102,241,0.1);color:#4f46e5;">✓</div>
+      오늘 할 일
+    </div>
+    <div class="todo-input-row">
+      <input type="text" id="todo-input" placeholder="새 할 일을 입력하세요..." onkeydown="if(event.key==='Enter')addTodo()">
+      <select id="todo-priority">
+        <option value="high">🔴 높음</option>
+        <option value="mid" selected>🟠 보통</option>
+        <option value="low">🔵 낮음</option>
+      </select>
+      <button onclick="addTodo()">추가</button>
+    </div>
+    <ul class="todo-list" id="todo-list"></ul>
+  </div>
+
+  <!-- 프로젝트 진행률 -->
+  <div class="card green">
+    <div class="card-title">
+      <div class="icon" style="background:var(--green-bg);color:var(--green);">📈</div>
+      프로젝트 진행률
+    </div>
+    <div id="projects"></div>
+  </div>
+
+  <!-- 주간 일정 -->
+  <div class="card full orange">
+    <div class="card-title">
+      <div class="icon" style="background:var(--orange-bg);color:var(--orange);">📅</div>
+      이번 주 일정 (3월 9일 ~ 13일)
+    </div>
+    <div class="week-grid" id="week-grid"></div>
+    <!-- 행사 배너 -->
+    <div class="event-banner">
+      <div class="event-banner-text">
+        <h3>🤖 THE AI INFRASTRUCTURE FORUM 2026</h3>
+        <p>2026. 3. 31(화) | 아주대학교 연암관 대강당</p>
+      </div>
+      <button class="event-banner-btn">사전등록 →</button>
+    </div>
+  </div>
+
+  <!-- 매출 현황 -->
+  <div class="card full pink">
+    <div class="card-title">
+      <div class="icon" style="background:var(--pink-bg);color:var(--pink);">💰</div>
+      매출 현황 (2026년 1~2월)
+    </div>
+    <div class="chart-area">
+      <div class="bar-chart" id="bar-chart"></div>
+      <div class="legend" id="legend"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ============ 날짜 ============
+const now = new Date();
+const dayNames = ['일','월','화','수','목','금','토'];
+document.getElementById('today-display').textContent =
+  `${now.getFullYear()}년 ${now.getMonth()+1}월 ${now.getDate()}일 (${dayNames[now.getDay()]})`;
+
+// ============ 달력 ============
+let calYear = now.getFullYear();
+let calMonth = now.getMonth();
+
+// 일정 데이터 (날짜별 상세)
+const calendarEvents = {
+  '2026-03-09': [
+    { text: '주간회의 10:00', cls: 'purple' },
+    { text: 'A/B 테스트 결과 리뷰', cls: 'cyan' },
+  ],
+  '2026-03-10': [
+    { text: '영상 광고 촬영', cls: 'pink' },
+    { text: '블로그 원고 검토', cls: 'green' },
+  ],
+  '2026-03-11': [
+    { text: '프로모션 기획안 마감', cls: 'orange' },
+    { text: '디자인 시안 회의', cls: 'purple' },
+  ],
+  '2026-03-12': [
+    { text: '영상 편집 완료', cls: 'pink' },
+    { text: '경쟁사 분석 보고', cls: 'cyan' },
+  ],
+  '2026-03-13': [
+    { text: '인플루언서 미팅', cls: 'green' },
+    { text: '주간 성과 리포트', cls: 'orange' },
+  ],
+  '2026-03-16': [
+    { text: '주간회의 10:00', cls: 'purple' },
+    { text: '프로모션 기획안 검토', cls: 'orange' },
+  ],
+  '2026-03-31': [
+    { text: 'AI Infrastructure Forum 2026', cls: 'pink' },
+    { text: '아주대 연암관 대강당', cls: 'cyan' },
+  ],
+};
+
+function renderCalendar() {
+  const title = document.getElementById('cal-title');
+  title.textContent = `${calYear}년 ${calMonth + 1}월`;
+
+  const grid = document.getElementById('calendar-grid');
+  const dayLabels = ['일','월','화','수','목','금','토'];
+  let html = dayLabels.map((d, i) =>
+    `<div class="cal-day-name ${i===0?'sun':''}${i===6?'sat':''}">${d}</div>`
+  ).join('');
+
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const lastDate = new Date(calYear, calMonth + 1, 0).getDate();
+  const prevLastDate = new Date(calYear, calMonth, 0).getDate();
+
+  // 이전 달
+  for (let i = firstDay - 1; i >= 0; i--) {
+    const d = prevLastDate - i;
+    const dow = (firstDay - i - 1 + 7) % 7;
+    html += `<div class="cal-cell other-month ${dow===0?'sun':''}${dow===6?'sat':''}">${d}</div>`;
+  }
+
+  // 이번 달
+  for (let d = 1; d <= lastDate; d++) {
+    const dow = (firstDay + d - 1) % 7;
+    const isToday = d === now.getDate() && calMonth === now.getMonth() && calYear === now.getFullYear();
+    const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const hasEvent = !!calendarEvents[dateStr];
+    const clickAttr = hasEvent ? `onclick="showCalPopup(event,'${dateStr}')"` : '';
+    html += `<div class="cal-cell ${isToday?'today':''} ${dow===0?'sun':''} ${dow===6?'sat':''} ${hasEvent?'has-event':''}" ${clickAttr}>${d}</div>`;
+  }
+
+  // 다음 달
+  const totalCells = firstDay + lastDate;
+  const remaining = totalCells % 7 === 0 ? 0 : 7 - (totalCells % 7);
+  for (let d = 1; d <= remaining; d++) {
+    const dow = (totalCells + d - 1) % 7;
+    html += `<div class="cal-cell other-month ${dow===0?'sun':''}${dow===6?'sat':''}">${d}</div>`;
+  }
+
+  grid.innerHTML = html;
+}
+
+function changeMonth(offset) {
+  calMonth += offset;
+  if (calMonth < 0) { calMonth = 11; calYear--; }
+  if (calMonth > 11) { calMonth = 0; calYear++; }
+  renderCalendar();
+}
+
+function goToday() {
+  calYear = now.getFullYear();
+  calMonth = now.getMonth();
+  renderCalendar();
+}
+
+renderCalendar();
+
+// 달력 팝업
+let activePopup = null;
+function showCalPopup(e, dateStr) {
+  e.stopPropagation();
+  closeCalPopup();
+  const events = calendarEvents[dateStr];
+  if (!events) return;
+
+  const cell = e.currentTarget;
+  const card = document.querySelector('.calendar-card');
+  const cardRect = card.getBoundingClientRect();
+  const cellRect = cell.getBoundingClientRect();
+
+  const [,m,d] = dateStr.split('-');
+  const dateLabel = `${parseInt(m)}월 ${parseInt(d)}일`;
+
+  const popup = document.createElement('div');
+  popup.className = 'cal-popup';
+  popup.innerHTML = `
+    <div class="cal-popup-header">
+      <span>${dateLabel} 일정</span>
+      <button class="cal-popup-close" onclick="closeCalPopup()">✕</button>
+    </div>
+    ${events.map(ev => `<div class="cal-popup-item ${ev.cls}">${ev.text}</div>`).join('')}
+  `;
+
+  card.appendChild(popup);
+
+  let left = cellRect.left - cardRect.left + cellRect.width / 2;
+  let top = cellRect.bottom - cardRect.top + 8;
+
+  // 오른쪽 넘침 방지
+  const popupW = 220;
+  if (left + popupW > cardRect.width) left = left - popupW + 20;
+  if (left < 0) left = 8;
+
+  // 하단 넘침 → 위로 표시
+  const spaceBelow = cardRect.bottom - cellRect.bottom;
+  if (spaceBelow < 120) {
+    top = cellRect.top - cardRect.top - 8;
+    popup.style.transform = 'translateY(-100%)';
+  }
+
+  popup.style.left = left + 'px';
+  popup.style.top = top + 'px';
+  activePopup = popup;
+}
+
+function closeCalPopup() {
+  if (activePopup) { activePopup.remove(); activePopup = null; }
+}
+
+document.addEventListener('click', (e) => {
+  if (activePopup && !activePopup.contains(e.target)) closeCalPopup();
+});
+
+// ============ 매출 데이터 파싱 ============
+const csvData = `날짜,제품,카테고리,수량,단가,매출액,지역
+2026-01-05,무선 이어폰,전자기기,45,89000,4005000,서울
+2026-01-05,보조배터리,전자기기,32,35000,1120000,서울
+2026-01-05,텀블러,생활용품,78,25000,1950000,부산
+2026-01-08,무선 이어폰,전자기기,52,89000,4628000,서울
+2026-01-08,블루투스 스피커,전자기기,18,120000,2160000,대구
+2026-01-08,텀블러,생활용품,65,25000,1625000,서울
+2026-01-12,보조배터리,전자기기,41,35000,1435000,부산
+2026-01-12,무선 충전기,전자기기,29,45000,1305000,서울
+2026-01-12,에코백,생활용품,93,15000,1395000,대구
+2026-01-15,무선 이어폰,전자기기,38,89000,3382000,부산
+2026-01-15,블루투스 스피커,전자기기,22,120000,2640000,서울
+2026-01-15,텀블러,생활용품,84,25000,2100000,서울
+2026-01-19,보조배터리,전자기기,55,35000,1925000,대구
+2026-01-19,에코백,생활용품,110,15000,1650000,서울
+2026-01-19,무선 충전기,전자기기,33,45000,1485000,부산
+2026-01-22,무선 이어폰,전자기기,61,89000,5429000,서울
+2026-01-22,텀블러,생활용품,72,25000,1800000,대구
+2026-01-22,블루투스 스피커,전자기기,15,120000,1800000,부산
+2026-01-26,보조배터리,전자기기,48,35000,1680000,서울
+2026-01-26,에코백,생활용품,88,15000,1320000,서울
+2026-01-26,무선 충전기,전자기기,37,45000,1665000,대구
+2026-02-01,무선 이어폰,전자기기,70,89000,6230000,서울
+2026-02-01,텀블러,생활용품,95,25000,2375000,부산
+2026-02-01,보조배터리,전자기기,43,35000,1505000,서울
+2026-02-05,블루투스 스피커,전자기기,25,120000,3000000,서울
+2026-02-05,에코백,생활용품,120,15000,1800000,대구
+2026-02-05,무선 충전기,전자기기,31,45000,1395000,부산
+2026-02-10,무선 이어폰,전자기기,58,89000,5162000,대구
+2026-02-10,텀블러,생활용품,67,25000,1675000,서울
+2026-02-10,보조배터리,전자기기,39,35000,1365000,서울`;
+
+const rows = csvData.trim().split('\n').slice(1).map(r => {
+  const c = r.split(',');
+  return { date: c[0], product: c[1], category: c[2], qty: +c[3], price: +c[4], revenue: +c[5], region: c[6] };
+});
+
+const totalRevenue = rows.reduce((s,r) => s + r.revenue, 0);
+const totalQty = rows.reduce((s,r) => s + r.qty, 0);
+const janRevenue = rows.filter(r => r.date.startsWith('2026-01')).reduce((s,r) => s + r.revenue, 0);
+const febRevenue = rows.filter(r => r.date.startsWith('2026-02')).reduce((s,r) => s + r.revenue, 0);
+const growthPct = ((febRevenue - janRevenue) / janRevenue * 100);
+
+// 제품별 매출
+const byProduct = {};
+rows.forEach(r => { byProduct[r.product] = (byProduct[r.product]||0) + r.revenue; });
+
+// 지역별 매출
+const byRegion = {};
+rows.forEach(r => { byRegion[r.region] = (byRegion[r.region]||0) + r.revenue; });
+
+const fmt = n => new Intl.NumberFormat('ko-KR').format(n);
+const fmtM = n => (n / 10000).toFixed(0) + '만';
+
+// ============ 매출 요약 상단 렌더 ============
+document.getElementById('stats-row').innerHTML = `
+  <div class="stat-box">
+    <div class="label">총 매출</div>
+    <div class="value" style="color:var(--accent2)">${(totalRevenue/100000000).toFixed(2)}억</div>
+    <div class="sub" style="color:var(--text-dim)">1~2월 누적</div>
+  </div>
+  <div class="stat-box">
+    <div class="label">2월 매출</div>
+    <div class="value" style="color:var(--green)">${fmtM(febRevenue)}원</div>
+    <div class="sub ${growthPct >= 0 ? 'down' : 'up'}">전월 대비 ${growthPct >= 0 ? '▼' : '▲'} ${Math.abs(growthPct).toFixed(1)}%</div>
+  </div>
+  <div class="stat-box">
+    <div class="label">총 판매수량</div>
+    <div class="value" style="color:var(--orange)">${fmt(totalQty)}</div>
+    <div class="sub" style="color:var(--text-dim)">30건 거래</div>
+  </div>
+  <div class="stat-box">
+    <div class="label">베스트 제품</div>
+    <div class="value" style="color:var(--pink);font-size:16px;">무선 이어폰</div>
+    <div class="sub" style="color:var(--text-dim)">${fmtM(byProduct['무선 이어폰'])}원</div>
+  </div>
+`;
+
+// ============ 할 일 (회의록 기반) ============
+const initialTodos = [
+  { text: '영상 광고 3개 추가 제작', assignee: '박사원', priority: 'high', done: false },
+  { text: '인플루언서 미팅 일정 잡기 (금요일까지)', assignee: '이과장', priority: 'high', done: false },
+  { text: '3월 프로모션 기획안 초안 (수요일까지)', assignee: '김대리', priority: 'high', done: false },
+  { text: '경쟁사 C사 신규 캠페인 분석', assignee: '박사원', priority: 'mid', done: false },
+  { text: '영상제작비 추가 200만원 요청서 작성', assignee: '정팀장', priority: 'mid', done: false },
+  { text: '사전 티저 콘텐츠 기획 (3월 넷째주 시작)', assignee: '김대리', priority: 'low', done: false },
+];
+
+let todos = JSON.parse(localStorage.getItem('dashboard-todos') || 'null') || initialTodos;
+
+function saveTodos() { localStorage.setItem('dashboard-todos', JSON.stringify(todos)); }
+
+function renderTodos() {
+  const list = document.getElementById('todo-list');
+  const priorityOrder = { high: 0, mid: 1, low: 2 };
+  const sorted = [...todos].sort((a, b) => {
+    if (a.done !== b.done) return a.done ? 1 : -1;
+    return priorityOrder[a.priority] - priorityOrder[b.priority];
+  });
+  list.innerHTML = sorted.map((t, _) => {
+    const idx = todos.indexOf(t);
+    const pLabel = { high: '높음', mid: '보통', low: '낮음' }[t.priority];
+    return `<li class="todo-item ${t.done ? 'done' : ''}" onclick="toggleTodo(${idx})">
+      <input type="checkbox" ${t.done ? 'checked' : ''} onclick="event.stopPropagation();toggleTodo(${idx})">
+      <span class="todo-text">${t.text}</span>
+      ${t.assignee ? `<span class="todo-assignee">${t.assignee}</span>` : ''}
+      <span class="priority-badge priority-${t.priority}">${pLabel}</span>
+      <button class="todo-delete" onclick="event.stopPropagation();deleteTodo(${idx})">✕</button>
+    </li>`;
+  }).join('');
+}
+
+function toggleTodo(i) { todos[i].done = !todos[i].done; saveTodos(); renderTodos(); }
+function deleteTodo(i) { todos.splice(i, 1); saveTodos(); renderTodos(); }
+function addTodo() {
+  const input = document.getElementById('todo-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const priority = document.getElementById('todo-priority').value;
+  todos.push({ text, assignee: '', priority, done: false });
+  input.value = '';
+  saveTodos();
+  renderTodos();
+}
+renderTodos();
+
+// ============ 프로젝트 진행률 ============
+const projects = [
+  { name: 'SNS 영상 광고 캠페인', pct: 65, color: 'linear-gradient(90deg,#6366f1,#a855f7)' },
+  { name: '인플루언서 협업', pct: 30, color: 'linear-gradient(90deg,#ec4899,#f43f5e)' },
+  { name: '3월 프로모션 기획', pct: 15, color: 'linear-gradient(90deg,#f97316,#eab308)' },
+  { name: '4월 신제품 런칭 티저', pct: 10, color: 'linear-gradient(90deg,#06b6d4,#22c55e)' },
+  { name: '블로그 콘텐츠 발행', pct: 100, color: 'linear-gradient(90deg,#22c55e,#4ade80)' },
+];
+
+document.getElementById('projects').innerHTML = projects.map(p => `
+  <div class="project-item">
+    <div class="project-info">
+      <span>${p.name}</span>
+      <span class="pct" style="color:${p.pct===100?'var(--green)':'var(--text)'}">${p.pct}%</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" style="width:${p.pct}%;background:${p.color}"></div>
+    </div>
+  </div>
+`).join('');
+
+// ============ 주간 일정 ============
+const weekSchedule = [
+  {
+    day: '월', date: '3/9', today: true,
+    events: [
+      { text: '주간회의 10:00', cls: 'purple' },
+      { text: 'A/B 테스트 결과 리뷰', cls: 'cyan' },
+    ]
+  },
+  {
+    day: '화', date: '3/10', today: false,
+    events: [
+      { text: '영상 광고 촬영', cls: 'pink' },
+      { text: '블로그 원고 검토', cls: 'green' },
+    ]
+  },
+  {
+    day: '수', date: '3/11', today: false,
+    events: [
+      { text: '프로모션 기획안 마감', cls: 'orange' },
+      { text: '디자인 시안 회의', cls: 'purple' },
+    ]
+  },
+  {
+    day: '목', date: '3/12', today: false,
+    events: [
+      { text: '영상 편집 완료', cls: 'pink' },
+      { text: '경쟁사 분석 보고', cls: 'cyan' },
+    ]
+  },
+  {
+    day: '금', date: '3/13', today: false,
+    events: [
+      { text: '인플루언서 미팅', cls: 'green' },
+      { text: '주간 성과 리포트', cls: 'orange' },
+    ]
+  },
+];
+
+document.getElementById('week-grid').innerHTML = weekSchedule.map(d => `
+  <div class="day-col ${d.today ? 'today' : ''}">
+    <div class="day-header">
+      <div class="day-name">${d.day}요일</div>
+      <div class="day-date">${d.date}</div>
+    </div>
+    ${d.events.map(e => `<div class="event ${e.cls}">${e.text}</div>`).join('')}
+  </div>
+`).join('');
+
+// ============ 매출 바 차트 (제품별) ============
+const productColors = {
+  '무선 이어폰': '#6366f1',
+  '보조배터리': '#a855f7',
+  '텀블러': '#22c55e',
+  '블루투스 스피커': '#ec4899',
+  '무선 충전기': '#f97316',
+  '에코백': '#06b6d4',
+};
+
+const maxRevenue = Math.max(...Object.values(byProduct));
+document.getElementById('bar-chart').innerHTML = Object.entries(byProduct)
+  .sort((a,b) => b[1]-a[1])
+  .map(([name, rev]) => {
+    const h = (rev / maxRevenue * 140);
+    return `<div class="bar-group">
+      <div class="bar-value">${fmtM(rev)}</div>
+      <div class="bar" style="height:${h}px;background:${productColors[name]}"></div>
+      <div class="bar-label">${name}</div>
+    </div>`;
+  }).join('');
+
+// 지역별 범례
+const regionColors = { '서울': '#6366f1', '부산': '#ec4899', '대구': '#f97316' };
+document.getElementById('legend').innerHTML = `
+  <div style="font-size:13px;font-weight:600;margin-bottom:4px;">지역별 매출</div>
+  ${Object.entries(byRegion).sort((a,b)=>b[1]-a[1]).map(([name, rev]) => `
+    <div class="legend-item">
+      <div class="legend-dot" style="background:${regionColors[name]}"></div>
+      <span>${name}</span>
+      <span class="legend-value">${fmtM(rev)}</span>
+    </div>
+  `).join('')}
+  <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);font-size:11px;color:var(--text-dim);">
+    카테고리: 전자기기 ${fmtM(rows.filter(r=>r.category==='전자기기').reduce((s,r)=>s+r.revenue,0))} / 생활용품 ${fmtM(rows.filter(r=>r.category==='생활용품').reduce((s,r)=>s+r.revenue,0))}
+  </div>
+`;
+</script>
+</body>
+</html>

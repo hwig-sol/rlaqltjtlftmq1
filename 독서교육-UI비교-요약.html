@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>독서교육 플랫폼 UI 비교 요약 — 서비스 기획 참고용</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans KR', sans-serif; background: #f7f8fb; color: #222; line-height: 1.75; }
+
+        /* ── Print: 2 pages ── */
+        @media print {
+            body { background: #fff; }
+            .page { break-after: page; box-shadow: none; margin: 0; border-radius: 0; }
+            .page:last-child { break-after: auto; }
+        }
+
+        .page {
+            max-width: 960px;
+            margin: 32px auto;
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            padding: 48px 52px;
+            min-height: 1100px;
+        }
+
+        /* ── Header ── */
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 3px solid #222;
+            padding-bottom: 14px;
+            margin-bottom: 32px;
+        }
+        .page-header h1 { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+        .page-header .meta { font-size: 0.78rem; color: #999; }
+
+        /* ── Section ── */
+        h2 {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            background: #333;
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 6px;
+            margin-bottom: 16px;
+        }
+        h3 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin: 18px 0 8px;
+            color: #444;
+        }
+
+        /* ── Two-Column Layout ── */
+        .vs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 28px;
+        }
+        .col {
+            border-radius: 12px;
+            padding: 20px 22px;
+        }
+        .col.wj { background: #FFF8F0; border: 1.5px solid #FFD9A8; }
+        .col.hn { background: #FFF5F3; border: 1.5px solid #FFBDB0; }
+        .col-title {
+            font-size: 0.88rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .col.wj .col-title { color: #E68A00; }
+        .col.hn .col-title { color: #D63B20; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+        .dot.wj { background: #FF9800; }
+        .dot.hn { background: #E8491D; }
+
+        .col ul { list-style: none; padding: 0; }
+        .col li {
+            font-size: 0.82rem;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            display: flex;
+            gap: 6px;
+        }
+        .col li:last-child { border-bottom: none; }
+        .col li::before { content: ''; width: 4px; height: 4px; border-radius: 50%; background: #bbb; flex-shrink: 0; margin-top: 8px; }
+
+        /* ── Comparison Table ── */
+        .cmp-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+            margin-bottom: 28px;
+        }
+        .cmp-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: #f4f5f7;
+            font-weight: 600;
+            border-bottom: 2px solid #ddd;
+        }
+        .cmp-table th:first-child { width: 140px; border-radius: 8px 0 0 0; }
+        .cmp-table th:nth-child(2) { color: #E68A00; }
+        .cmp-table th:nth-child(3) { color: #D63B20; }
+        .cmp-table th:last-child { border-radius: 0 8px 0 0; }
+        .cmp-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: top;
+        }
+        .cmp-table tr:hover td { background: #fafafa; }
+        .tag {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .tag-wj { background: #FFF3E0; color: #E68A00; }
+        .tag-hn { background: #FFEBEE; color: #D63B20; }
+        .tag-g { background: #E8F5E9; color: #2E7D32; }
+        .tag-b { background: #E3F2FD; color: #1565C0; }
+
+        /* ── Wireframe ASCII ── */
+        .wireframe-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 24px;
+        }
+        .wireframe {
+            background: #1e1e2e;
+            color: #c8d0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            line-height: 1.45;
+            padding: 16px 18px;
+            border-radius: 10px;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .wireframe .hl { color: #ffa657; }
+        .wireframe .hl2 { color: #ff6b6b; }
+        .wireframe-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+        .wireframe-label.wj { color: #E68A00; }
+        .wireframe-label.hn { color: #D63B20; }
+
+        /* ── Insight Box ── */
+        .insight {
+            background: linear-gradient(135deg, #f0f4ff, #f8f0ff);
+            border-left: 4px solid #6C5CE7;
+            border-radius: 0 10px 10px 0;
+            padding: 16px 20px;
+            margin-bottom: 24px;
+        }
+        .insight-title { font-size: 0.85rem; font-weight: 700; color: #6C5CE7; margin-bottom: 6px; }
+        .insight p { font-size: 0.82rem; color: #555; }
+
+        /* ── Takeaway Checklist ── */
+        .checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .check-item {
+            background: #f8f9fb;
+            border-radius: 10px;
+            padding: 14px 16px;
+            font-size: 0.82rem;
+            border: 1px solid #eee;
+        }
+        .check-item strong { display: block; font-size: 0.85rem; margin-bottom: 4px; }
+        .check-item .from { font-size: 0.7rem; color: #999; margin-top: 4px; }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════ PAGE 1 ═══════════ -->
+<div class="page">
+    <div class="page-header">
+        <h1>독서교육 플랫폼 UI 비교 요약</h1>
+        <span class="meta">2026.03.11 | 서비스 기획 참고용</span>
+    </div>
+
+    <!-- 1. 레이아웃 와이어프레임 -->
+    <h2>1. 메인 페이지 레이아웃 구조</h2>
+
+    <div class="wireframe-wrap">
+        <div>
+            <div class="wireframe-label wj">웅진씽크빅 (wjthinkbig.com)</div>
+            <div class="wireframe">┌─────────────────────────────┐
+│ <span class="hl">LOGO</span>  브랜드 제품 이벤트 센터 │ ← 고정 GNB
+│         <span class="hl">🔍 검색  ☰ 햄버거</span>   │
+├─────────────────────────────┤
+│                             │
+│   <span class="hl">히어로 슬라이더 (6장)</span>      │ ← 캠페인/프로모션
+│   ◀ 02/06 ▶  ───────       │
+│                             │
+├─────────────────────────────┤
+│ "적합한 학습을 찾아보세요"  │
+│ [학습▾] [나이▾] [과목▾] <span class="hl">🔍</span> │ ← 맞춤 검색 필터
+├─────────────────────────────┤
+│ 🕐  📚  📖  📋  ㄱ  En …  │ ← 퀵메뉴 아이콘 8개
+├─────────────────────────────┤
+│ <span class="hl">[씽크빅] [스마트올] [북클럽]</span>  │ ← 탭 브랜드 전환
+│  카드1     카드2     카드3   │
+├─────────────────────────────┤
+│ ┌──────────────────────────┐│
+│ │ <span class="hl">체험/상담 신청</span> 고정 바    ││ ← 하단 CTA 고정
+│ └──────────────────────────┘│
+└─────────────────────────────┘</div>
+        </div>
+        <div>
+            <div class="wireframe-label hn">한우리독서토론논술 (hanuribook.com)</div>
+            <div class="wireframe">┌─────────────────────────────┐
+│ <span class="hl2">LOGO</span>  프로그램 상담 센터 선생님│ ← 고정 GNB
+│                             │
+├─────────────────────────────┤
+│                             │
+│  <span class="hl2">{ 읽기 } { 쓰기 } { 말하기 }</span> │ ← 핵심역량 로테이션
+│     "능력은"                │   (CSS 애니메이션)
+│                             │
+├─────────────────────────────┤
+│  "우리 아이의 인생           │
+│   모든 페이지에 함께하기에"  │ ← 감성 스토리텔링
+│  <span class="hl2">한우리</span>는 깊이 연구하고 …   │
+├─────────────────────────────┤
+│ ● 한우리의 읽기             │
+│   ┌──────┬──────┬──────┐   │ ← 3단 읽기 프로세스
+│   │스스로 │함께  │깊이  │   │   + 3D 일러스트
+├─────────────────────────────┤
+│ ● 한우리의 쓰기 / 말하기    │ ← 같은 패턴 반복
+├─────────────────────────────┤
+│ ┌──────────────────────────┐│
+│ │ <span class="hl2">상담 신청 + Npay 프로모</span>  ││ ← 하단 CTA 고정
+│ └──────────────────────────┘│
+└─────────────────────────────┘</div>
+        </div>
+    </div>
+
+    <!-- 2. 핵심 UI 패턴 비교 테이블 -->
+    <h2>2. 핵심 UI 컴포넌트 비교</h2>
+
+    <table class="cmp-table">
+        <thead>
+            <tr>
+                <th>UI 요소</th>
+                <th>웅진씽크빅</th>
+                <th>한우리독서토론논술</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>GNB</strong></td>
+                <td>로고 + 5개 텍스트 메뉴 + 검색 아이콘 + 햄버거. 우측 슬로건 텍스트 애니메이션 <span class="tag tag-g">검색 있음</span></td>
+                <td>로고 + 4개 텍스트 메뉴 (가로 균등). 햄버거 메뉴로 전체 메뉴 확장 <span class="tag tag-b">검색 없음</span></td>
+            </tr>
+            <tr>
+                <td><strong>히어로 영역</strong></td>
+                <td>풀와이드 슬라이더 6장, 이벤트/캠페인 중심. 하단에 페이지 인디케이터 + 진행 바 <span class="tag tag-wj">전환형</span></td>
+                <td>풀스크린 단일 섹션 + CSS 텍스트 로테이션({읽기} {쓰기} {말하기}). 강렬한 오렌지 배경 <span class="tag tag-hn">몰입형</span></td>
+            </tr>
+            <tr>
+                <td><strong>탐색/필터</strong></td>
+                <td>3단 드롭다운 필터 (학습유형, 나이, 과목) + 검색 버튼. 하단에 아이콘 퀵메뉴 8개</td>
+                <td>별도 필터/검색 없음. 메뉴 + 스크롤로만 탐색</td>
+            </tr>
+            <tr>
+                <td><strong>콘텐츠 구조</strong></td>
+                <td>탭 전환 (씽크빅/스마트올/북클럽) → 제품 카드 그리드. 데이터 중심 레이아웃</td>
+                <td>풀스크린 섹션 스크롤 (읽기→쓰기→말하기→실적→프로그램). 스토리텔링 중심</td>
+            </tr>
+            <tr>
+                <td><strong>CTA (전환)</strong></td>
+                <td>하단 고정바 "체험/상담 신청" + 우측 "1:1 문의" FAB + 상단 "스크롤 탑" FAB</td>
+                <td>하단 고정바 "상담 시 Npay 상품권" + 우측 플로팅 다중 팝업(교사모집, 설명회 등)</td>
+            </tr>
+            <tr>
+                <td><strong>색상 체계</strong></td>
+                <td>배경 #FFF, 포인트 <span style="color:#FF9800;font-weight:700;">오렌지 #FF9800</span>, 텍스트 #333. 밝고 깔끔한 톤</td>
+                <td>배경 <span style="color:#E8491D;font-weight:700;">강한 오렌지-레드 #E8491D</span> 풀섹션, 텍스트 #FFF. 대담하고 강렬한 톤</td>
+            </tr>
+            <tr>
+                <td><strong>일러스트</strong></td>
+                <td>실사 사진 + 제품 목업 (태블릿, 학습지) 중심</td>
+                <td>3D 렌더링 일러스트 (책, 연필, 말풍선) + 실사 모델 (선생님+학생) 혼합</td>
+            </tr>
+            <tr>
+                <td><strong>반응형</strong></td>
+                <td>완전 반응형. 모바일에서 하단 탭바 네비게이션 전환</td>
+                <td>반응형. 모바일에서 상단 고정 GNB 유지, 풀스크린 섹션 스크롤 그대로</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="insight">
+        <div class="insight-title">핵심 차이: 전환 퍼널 vs 브랜드 스토리</div>
+        <p>웅진은 <strong>"검색 → 필터 → 제품 선택 → 체험 신청"</strong> 퍼널을 메인에 직접 배치하여 즉각적 전환을 유도합니다. 한우리는 <strong>"읽기-쓰기-말하기 철학 → 35년 신뢰 → 프로그램 안내 → 상담"</strong> 스토리를 따라가며 학부모의 공감을 이끌어냅니다. 비슷한 서비스를 만든다면, 이 두 접근의 하이브리드가 이상적입니다.</p>
+    </div>
+</div>
+
+<!-- ═══════════ PAGE 2 ═══════════ -->
+<div class="page">
+    <div class="page-header">
+        <h1>UI 설계 시 가져갈 포인트</h1>
+        <span class="meta">Page 2 / 2</span>
+    </div>
+
+    <!-- 3. 페이지 플로우 비교 -->
+    <h2>3. 사용자 여정(User Flow) 비교</h2>
+
+    <div class="vs">
+        <div class="col wj">
+            <div class="col-title"><span class="dot wj"></span> 웅진씽크빅 — 탐색 중심 플로우</div>
+            <ul>
+                <li>메인 진입 → 슬라이더 배너로 이벤트 노출</li>
+                <li>3단 필터(유형/나이/과목)로 즉시 맞춤 검색</li>
+                <li>퀵메뉴 8개 아이콘으로 주요 브랜드 원클릭 이동</li>
+                <li>탭 UI로 3개 브랜드(씽크빅/스마트올/북클럽) 전환</li>
+                <li>제품 카드 → 상세 페이지 → 체험/상담 신청 폼</li>
+                <li>하단 고정 CTA 바 항상 노출 (이탈 방지)</li>
+            </ul>
+        </div>
+        <div class="col hn">
+            <div class="col-title"><span class="dot hn"></span> 한우리 — 스토리 중심 플로우</div>
+            <ul>
+                <li>메인 진입 → 읽기/쓰기/말하기 로테이션 애니메이션으로 핵심가치 전달</li>
+                <li>스크롤 → 교육 철학 메시지 (감성 카피라이팅)</li>
+                <li>3개 역량별 풀섹션 (읽기→쓰기→말하기) + 3D 일러스트 + 3단 프로세스</li>
+                <li>35년 역사 + 실적 수치 (센터수, 교사수, 회원수)</li>
+                <li>프로그램 카드 (정규/심화/특강 탭 전환)</li>
+                <li>플로팅 상담 배너 + Npay 인센티브</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- 4. 컴포넌트 인벤토리 -->
+    <h2>4. 재사용 가능한 UI 컴포넌트 목록</h2>
+
+    <table class="cmp-table">
+        <thead>
+            <tr>
+                <th>컴포넌트</th>
+                <th>웅진에서 참고</th>
+                <th>한우리에서 참고</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>검색/필터 바</strong></td>
+                <td>3단 드롭다운 + 검색 버튼 조합. 헤딩 문구("적합한 학습을 찾아보세요")로 맥락 제공</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><strong>퀵메뉴</strong></td>
+                <td>원형 아이콘 + 라벨 8개 가로 배치. 한 줄로 주요 카테고리 커버</td>
+                <td>-</td>
+            </tr>
+            <tr>
+                <td><strong>프로그램 카드</strong></td>
+                <td>썸네일 + 제목 + 설명, 그리드 배치</td>
+                <td>컬러풀 일러스트 카드, 탭(정규/심화/특강) 전환, 가로 스크롤 가능</td>
+            </tr>
+            <tr>
+                <td><strong>풀스크린 섹션</strong></td>
+                <td>-</td>
+                <td>배경색 전환 + 3D 일러스트 + 큰 타이포 + 3단 프로세스 설명. 모바일에서 매우 효과적</td>
+            </tr>
+            <tr>
+                <td><strong>하단 고정 CTA</strong></td>
+                <td>"체험/상담 신청" 텍스트 + 동기부여 문구 조합</td>
+                <td>상품권 인센티브 강조 + Npay 뱃지. 모델 이미지 포함</td>
+            </tr>
+            <tr>
+                <td><strong>탭 전환</strong></td>
+                <td>라운드 필/고스트 버튼 탭 (브랜드 전환)</td>
+                <td>라운드 필 버튼 탭 (정규/심화/특강)</td>
+            </tr>
+            <tr>
+                <td><strong>수치 카운터</strong></td>
+                <td>-</td>
+                <td>전국 센터수 / 교사수 / 회원수 카운트업 애니메이션. 신뢰감 형성</td>
+            </tr>
+            <tr>
+                <td><strong>플로팅 요소</strong></td>
+                <td>우측 하단 "1:1 문의" + "TOP" FAB 2개</td>
+                <td>우측 다중 플로팅 팝업(교사모집, 설명회, 특별반 등) + "TOP" FAB</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 5. 서비스 기획 시 Takeaway -->
+    <h2>5. 내 서비스에 적용할 Takeaway</h2>
+
+    <div class="checklist">
+        <div class="check-item">
+            <strong>맞춤 검색 필터는 필수</strong>
+            연령/과목/유형 3단 필터를 메인 상단에 배치. 학부모가 원하는 프로그램에 3초 내 도달하게.
+            <div class="from">참고: 웅진 — 히어로 바로 아래 필터 바</div>
+        </div>
+        <div class="check-item">
+            <strong>교육 철학 스토리텔링 섹션</strong>
+            "왜 우리 서비스인가"를 풀스크린 + 큰 타이포 + 3D 일러스트로 임팩트 있게. 메인에 최소 1~2 섹션.
+            <div class="from">참고: 한우리 — 읽기/쓰기/말하기 풀섹션</div>
+        </div>
+        <div class="check-item">
+            <strong>퀵메뉴 아이콘 바</strong>
+            주요 서비스(과목별/연령별)를 아이콘+라벨 1줄로 배치. 모바일에서 가로 스크롤.
+            <div class="from">참고: 웅진 — 8개 원형 아이콘 퀵메뉴</div>
+        </div>
+        <div class="check-item">
+            <strong>수치 카운터로 신뢰 확보</strong>
+            회원수, 교사수, 만족도 등 핵심 KPI를 카운트업 애니메이션으로 노출.
+            <div class="from">참고: 한우리 — 센터수/교사수/회원수 영역</div>
+        </div>
+        <div class="check-item">
+            <strong>하단 고정 CTA + 인센티브</strong>
+            "무료 상담 신청" 고정바 + 상품권/할인 프로모션 뱃지 조합. 스크롤해도 항상 노출.
+            <div class="from">참고: 양쪽 모두 — 하단 고정 전환 바</div>
+        </div>
+        <div class="check-item">
+            <strong>프로그램 카드 + 탭 전환</strong>
+            정규/심화/특강 등 프로그램 유형을 탭으로 전환하고, 카드 형태로 시각화. 모바일에서 가로 스크롤.
+            <div class="from">참고: 한우리 — 3탭 프로그램 카드 섹션</div>
+        </div>
+        <div class="check-item">
+            <strong>색상 전략: 화이트+포인트 컬러</strong>
+            기본 배경은 화이트(웅진식 깔끔함), 핵심 섹션만 풀컬러 배경(한우리식 임팩트) 혼합.
+            <div class="from">참고: 하이브리드 전략</div>
+        </div>
+        <div class="check-item">
+            <strong>모바일: 하단 탭바 네비게이션</strong>
+            모바일에서는 상단 GNB를 간소화하고 하단 탭바(홈/프로그램/상담/마이)로 전환. 모바일 사용성 극대화.
+            <div class="from">참고: 웅진 — 모바일 하단 탭 네비게이션</div>
+        </div>
+    </div>
+
+    <div class="insight" style="margin-top: 28px;">
+        <div class="insight-title">종합: 이상적인 서비스 메인 페이지 구성 제안</div>
+        <p>
+            <strong>GNB</strong>(로고+메뉴+검색) →
+            <strong>히어로</strong>(핵심 가치 스토리텔링 1장 + 프로모션 배너) →
+            <strong>맞춤 필터 바</strong>(연령/과목/유형) →
+            <strong>퀵메뉴 아이콘</strong> →
+            <strong>교육 철학 풀섹션</strong>(3D 일러스트 + 큰 타이포) →
+            <strong>프로그램 카드</strong>(탭 전환) →
+            <strong>신뢰 지표</strong>(수치 카운터) →
+            <strong>후기/추천도서</strong> →
+            <strong>하단 고정 CTA</strong>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>
