@@ -113,15 +113,19 @@
       100% { transform: translateX(-50%); }
     }
     .showcase-item {
-      width: 320px; height: 200px; border-radius: 12px; flex-shrink: 0;
-      background: var(--bg); border: 2px dashed var(--border);
-      display: flex; align-items: center; justify-content: center;
-      color: var(--text-muted); font-size: 0.8rem; text-align: center;
+      width: 320px; border-radius: 12px; flex-shrink: 0;
+      background: var(--bg-card); border: 1px solid var(--border);
       overflow: hidden; position: relative;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
-    .showcase-item img { width: 100%; height: 100%; object-fit: cover; display: none; }
-    .showcase-item .placeholder { padding: 20px; }
-    .showcase-caption {
+    .showcase-item img { width: 100%; height: 200px; object-fit: cover; display: block; }
+    .showcase-item .placeholder { padding: 20px; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; text-align: center; }
+    .showcase-label {
+      padding: 10px 14px; font-size: 0.78rem; font-weight: 600;
+      color: var(--text); text-align: center; background: var(--bg-card);
+      border-top: 1px solid var(--border);
+    }
+    .showcase-hint {
       text-align: center; margin-top: 16px; padding: 0 20px;
       color: var(--text-muted); font-size: 0.8rem;
     }
@@ -226,8 +230,7 @@
     <!-- 강사 카드 -->
     <div class="instructor-card">
       <div class="instructor-photo">
-        <img src="" alt="강사 사진">
-        <span class="placeholder">강사 사진<br>(이미지 추가 예정)</span>
+        <img src="이미지/강의 모습.png" alt="강의 모습" style="display:block;">
       </div>
       <div class="instructor-info">
         <h2>강사명</h2>
@@ -328,58 +331,67 @@
     <div class="showcase-section">
       <div class="showcase-track-wrap">
         <div class="showcase-track" id="showcaseTrack">
+          <!-- 원본 세트 -->
           <div class="showcase-item">
-            <img src="" alt="결과물 1">
-            <span class="placeholder">실습 결과물 1<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물1_서비스 프로토타입 구현.png" alt="서비스 프로토타입 구현">
+            <div class="showcase-label">서비스 프로토타입 구현</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 2">
-            <span class="placeholder">실습 결과물 2<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물2_서비스 프로토타입 구현2.png" alt="서비스 프로토타입 구현 2">
+            <div class="showcase-label">서비스 프로토타입 구현 2</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 3">
-            <span class="placeholder">실습 결과물 3<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물3_회사 홈페이지 제작.png" alt="회사 홈페이지 제작">
+            <div class="showcase-label">회사 홈페이지 제작</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 4">
-            <span class="placeholder">실습 결과물 4<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물4_시장조사 및 보고서 생성.png" alt="시장조사 및 보고서 생성">
+            <div class="showcase-label">시장조사 및 보고서 생성</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 5">
-            <span class="placeholder">실습 결과물 5<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물5_ 서비스페이지 및 챗봇 생성.png" alt="서비스페이지 및 챗봇 생성">
+            <div class="showcase-label">서비스페이지 및 챗봇 생성</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 6">
-            <span class="placeholder">실습 결과물 6<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물6_ 개인업무비서 만들기.png" alt="개인업무비서 만들기">
+            <div class="showcase-label">개인업무비서 만들기</div>
+          </div>
+          <div class="showcase-item">
+            <img src="이미지/결과물7_서비스 제작.png" alt="서비스 제작">
+            <div class="showcase-label">서비스 제작</div>
           </div>
           <!-- 복제 세트 (무한 루프용) -->
           <div class="showcase-item">
-            <img src="" alt="결과물 1">
-            <span class="placeholder">실습 결과물 1<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물1_서비스 프로토타입 구현.png" alt="서비스 프로토타입 구현">
+            <div class="showcase-label">서비스 프로토타입 구현</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 2">
-            <span class="placeholder">실습 결과물 2<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물2_서비스 프로토타입 구현2.png" alt="서비스 프로토타입 구현 2">
+            <div class="showcase-label">서비스 프로토타입 구현 2</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 3">
-            <span class="placeholder">실습 결과물 3<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물3_회사 홈페이지 제작.png" alt="회사 홈페이지 제작">
+            <div class="showcase-label">회사 홈페이지 제작</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 4">
-            <span class="placeholder">실습 결과물 4<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물4_시장조사 및 보고서 생성.png" alt="시장조사 및 보고서 생성">
+            <div class="showcase-label">시장조사 및 보고서 생성</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 5">
-            <span class="placeholder">실습 결과물 5<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물5_ 서비스페이지 및 챗봇 생성.png" alt="서비스페이지 및 챗봇 생성">
+            <div class="showcase-label">서비스페이지 및 챗봇 생성</div>
           </div>
           <div class="showcase-item">
-            <img src="" alt="결과물 6">
-            <span class="placeholder">실습 결과물 6<br>(스크린샷 추가 예정)</span>
+            <img src="이미지/결과물6_ 개인업무비서 만들기.png" alt="개인업무비서 만들기">
+            <div class="showcase-label">개인업무비서 만들기</div>
+          </div>
+          <div class="showcase-item">
+            <img src="이미지/결과물7_서비스 제작.png" alt="서비스 제작">
+            <div class="showcase-label">서비스 제작</div>
           </div>
         </div>
       </div>
-      <div class="showcase-caption">마우스를 올리면 스크롤이 멈춥니다 · 이미지를 추가하면 자동으로 표시됩니다</div>
+      <div class="showcase-hint">마우스를 올리면 스크롤이 멈춥니다</div>
     </div>
 
     <!-- 추천 대상 체크리스트 -->
