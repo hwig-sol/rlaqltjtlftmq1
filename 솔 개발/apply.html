@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>수강 신청 — 바이브코딩 워크숍</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .container { max-width: 640px; margin: 0 auto; padding: 120px 24px 80px; }
+    .page-header { text-align: center; margin-bottom: 48px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 900; margin-bottom: 12px; }
+    .page-header p { color: var(--text-muted); font-size: 1rem; }
+
+    .apply-box {
+      background: var(--bg-card); border-radius: var(--radius); padding: 48px;
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+    }
+    .form-group { margin-bottom: 20px; }
+    .form-group label {
+      display: block; font-size: 0.85rem; font-weight: 600;
+      color: var(--text-muted); margin-bottom: 8px;
+    }
+    .form-group input, .form-group select {
+      width: 100%; padding: 14px 18px; border-radius: 12px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); font-size: 0.95rem; font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus {
+      outline: none; border-color: var(--primary);
+    }
+    .form-submit {
+      width: 100%; padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: 700;
+      background: var(--gradient); color: #fff; border: none; cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px;
+    }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,92,231,0.3); }
+
+    .section-divider {
+      text-align: center; margin: 40px 0 24px; position: relative;
+    }
+    .section-divider::before {
+      content: ''; position: absolute; top: 50%; left: 0; right: 0;
+      height: 1px; background: var(--border);
+    }
+    .section-divider span {
+      position: relative; background: var(--bg); padding: 0 20px;
+      font-size: 0.8rem; font-weight: 700; color: var(--text-muted);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .apply-box { padding: 32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">VIBE CODING</a>
+    <ul class="nav-links">
+      <li><a href="index.html#curriculum">커리큘럼</a></li>
+      <li><a href="schedule.html">일정</a></li>
+      <li><a href="qna.html">Q&A</a></li>
+      <li><a href="access.html">강의자료</a></li>
+    </ul>
+    <a href="apply.html" class="nav-cta">수강 신청</a>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>수강 신청</h1>
+      <p>아래 양식을 작성해 주세요</p>
+    </div>
+
+    <div class="apply-box">
+      <form id="applyForm" onsubmit="handleApply(event)">
+        <div class="form-group">
+          <label>이름</label>
+          <input type="text" placeholder="홍길동" required>
+        </div>
+        <div class="form-group">
+          <label>연락처</label>
+          <input type="tel" placeholder="010-0000-0000" required>
+        </div>
+        <div class="form-group">
+          <label>이메일</label>
+          <input type="email" placeholder="example@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>신청 회차</label>
+          <select required>
+            <option value="">선택해 주세요</option>
+            <option value="all">전체 (1~4강)</option>
+            <option value="1">1강 — 4/1(화) 내 컴퓨터에 AI 개발자 앉히기</option>
+            <option value="2">2강 — 4/8(화) 만든 걸 세상에 내보내기</option>
+            <option value="3">3강 — 외부 세계와 연결하기</option>
+            <option value="4">4강 — 혼자서도, 함께도 계속 만들기</option>
+          </select>
+        </div>
+        <button type="submit" class="form-submit">신청하기</button>
+      </form>
+    </div>
+
+    <div class="section-divider"><span>📅 강의 일정</span></div>
+    <div class="calendar-wrap" id="applyCalendar"></div>
+
+    <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+
+  <footer>
+    <p>© 2026 바이브코딩 워크숍. 비개발자를 위한 Claude Code 실전 강의.</p>
+  </footer>
+
+  <script>
+    function handleApply(e) {
+      e.preventDefault();
+      alert('신청이 완료되었습니다! 확인 후 안내 드리겠습니다.');
+      e.target.reset();
+    }
+
+    const EVENTS = {
+      '2026-04-01': { label: '1강', bg: 'rgba(108,92,231,0.12)', color: '#6C5CE7', textColor: '#6C5CE7' },
+      '2026-04-08': { label: '2강', bg: 'rgba(0,180,181,0.12)', color: '#00B4B5', textColor: '#00B4B5' },
+    };
+
+    function buildCalendar(container, year, month) {
+      const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+      container.innerHTML = `
+        <div class="calendar-header">
+          <h3>${year}년 ${months[month]}</h3>
+          <div class="calendar-nav">
+            <button onclick="navMonth(-1)">‹</button>
+            <button onclick="navMonth(1)">›</button>
+          </div>
+        </div>
+        <div class="calendar-grid" id="applyCalGrid"></div>`;
+
+      const grid = container.querySelector('.calendar-grid');
+      ['일','월','화','수','목','금','토'].forEach(d => {
+        const el = document.createElement('div');
+        el.className = 'cal-day-name';
+        el.textContent = d;
+        grid.appendChild(el);
+      });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = new Date();
+
+      for (let i = 0; i < firstDay; i++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day empty';
+        grid.appendChild(el);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day';
+        const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+
+        if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === d) {
+          el.classList.add('today');
+        }
+
+        if (EVENTS[dateStr]) {
+          const ev = EVENTS[dateStr];
+          el.classList.add('has-event');
+          el.style.background = ev.bg;
+          el.style.color = ev.textColor;
+          el.innerHTML = d + '<span class="event-dot" style="background:' + ev.color + '"></span><span class="event-label" style="color:' + ev.color + '">' + ev.label + '</span>';
+        } else {
+          el.textContent = d;
+        }
+        grid.appendChild(el);
+      }
+    }
+
+    let curYear = 2026, curMonth = 3;
+    function navMonth(delta) {
+      curMonth += delta;
+      if (curMonth > 11) { curMonth = 0; curYear++; }
+      if (curMonth < 0) { curMonth = 11; curYear--; }
+      buildCalendar(document.getElementById('applyCalendar'), curYear, curMonth);
+    }
+    buildCalendar(document.getElementById('applyCalendar'), curYear, curMonth);
+  </script>
+</body>
+</html>

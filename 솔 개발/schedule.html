@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>일정 안내 — 바이브코딩 워크숍</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .container { max-width: 900px; margin: 0 auto; padding: 120px 24px 80px; }
+    .page-header { text-align: center; margin-bottom: 48px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 900; margin-bottom: 12px; }
+    .page-header p { color: var(--text-muted); font-size: 1rem; }
+
+    .schedule-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      overflow: hidden; margin-bottom: 14px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .schedule-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); }
+    .schedule-card-inner {
+      display: flex; align-items: center; padding: 24px 28px; gap: 24px;
+    }
+    .schedule-num {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 900; flex-shrink: 0; color: #fff;
+    }
+    .schedule-card:nth-child(1) .schedule-num { background: var(--color-1); }
+    .schedule-card:nth-child(2) .schedule-num { background: var(--color-2); }
+    .schedule-card:nth-child(3) .schedule-num { background: var(--color-3); }
+    .schedule-card:nth-child(4) .schedule-num { background: var(--color-4); }
+    .schedule-info { flex: 1; }
+    .schedule-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 4px; }
+    .schedule-meta { font-size: 0.82rem; color: var(--text-muted); }
+    .schedule-meta span { margin-right: 14px; }
+    .schedule-badge {
+      display: inline-block; padding: 6px 14px; border-radius: 8px;
+      font-size: 0.75rem; font-weight: 600; flex-shrink: 0;
+    }
+    .badge-open { background: rgba(0,180,181,0.1); color: var(--color-2); }
+    .badge-soon { background: rgba(232,163,23,0.1); color: var(--color-3); }
+
+    .section-divider {
+      text-align: center; margin: 48px 0 32px; position: relative;
+    }
+    .section-divider::before {
+      content: ''; position: absolute; top: 50%; left: 0; right: 0;
+      height: 1px; background: var(--border);
+    }
+    .section-divider span {
+      position: relative; background: var(--bg); padding: 0 20px;
+      font-size: 0.8rem; font-weight: 700; color: var(--text-muted);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    .info-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 16px; margin-bottom: 32px;
+    }
+    .info-card {
+      background: var(--bg-card); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 24px; box-shadow: var(--shadow);
+    }
+    .info-card-icon { font-size: 1.5rem; margin-bottom: 12px; }
+    .info-card h4 {
+      font-size: 0.75rem; font-weight: 700; color: var(--text-muted);
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
+    }
+    .info-card p { font-size: 0.95rem; font-weight: 500; }
+    .info-card .sub { font-size: 0.8rem; color: var(--text-muted); margin-top: 4px; }
+    .info-card a { color: var(--primary); text-decoration: none; }
+    .info-card a:hover { text-decoration: underline; }
+    .contact-links { list-style: none; margin-top: 8px; }
+    .contact-links li {
+      padding: 6px 0; font-size: 0.85rem;
+      display: flex; align-items: center; gap: 8px;
+    }
+
+    .apply-cta {
+      text-align: center; margin-top: 16px; padding: 48px;
+      background: var(--bg-card); border-radius: var(--radius);
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+    }
+    .apply-cta h2 { font-size: 1.6rem; font-weight: 900; margin-bottom: 8px; }
+    .apply-cta p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; }
+
+    /* 챗봇 */
+    .chatbot-toggle {
+      position: fixed; bottom: 28px; right: 28px; z-index: 200;
+      width: 60px; height: 60px; border-radius: 50%;
+      background: var(--gradient); border: none; cursor: pointer;
+      color: #fff; font-size: 1.6rem;
+      box-shadow: 0 6px 24px rgba(108,92,231,0.3);
+      transition: transform 0.2s; display: flex; align-items: center; justify-content: center;
+    }
+    .chatbot-toggle:hover { transform: scale(1.08); }
+    .chatbot-panel {
+      position: fixed; bottom: 100px; right: 28px; z-index: 200;
+      width: 380px; max-height: 520px;
+      background: var(--bg-card); border-radius: 20px;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.12);
+      display: none; flex-direction: column; overflow: hidden;
+    }
+    .chatbot-panel.open { display: flex; }
+    .chatbot-header {
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(108,92,231,0.08), rgba(0,180,181,0.05));
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 12px;
+    }
+    .chatbot-avatar {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: var(--gradient); display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .chatbot-header-text h4 { font-size: 0.9rem; font-weight: 700; }
+    .chatbot-header-text p { font-size: 0.7rem; color: var(--accent); }
+    .chatbot-close {
+      margin-left: auto; background: none; border: none;
+      color: var(--text-muted); font-size: 1.2rem; cursor: pointer;
+    }
+    .chatbot-body { flex: 1; overflow-y: auto; padding: 16px; max-height: 340px; }
+    .chat-msg { margin-bottom: 12px; display: flex; gap: 8px; }
+    .chat-msg.bot { justify-content: flex-start; }
+    .chat-msg.user { justify-content: flex-end; }
+    .chat-bubble {
+      max-width: 80%; padding: 10px 14px; border-radius: 14px;
+      font-size: 0.85rem; line-height: 1.5;
+    }
+    .chat-msg.bot .chat-bubble {
+      background: var(--bg); color: var(--text); border-bottom-left-radius: 4px;
+    }
+    .chat-msg.user .chat-bubble {
+      background: rgba(108,92,231,0.1); color: var(--text); border-bottom-right-radius: 4px;
+    }
+    .chatbot-quick {
+      padding: 12px 16px; display: flex; flex-wrap: wrap; gap: 6px;
+      border-top: 1px solid var(--border);
+    }
+    .quick-btn {
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text-muted); font-size: 0.75rem; cursor: pointer;
+      font-family: inherit; transition: background 0.2s, color 0.2s;
+    }
+    .quick-btn:hover { background: rgba(108,92,231,0.08); color: var(--text); }
+
+    @media (max-width: 768px) {
+      .schedule-card-inner { flex-direction: column; text-align: center; gap: 12px; }
+      .info-grid { grid-template-columns: 1fr; }
+      .chatbot-panel { width: calc(100vw - 32px); right: 16px; bottom: 96px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">VIBE CODING</a>
+    <ul class="nav-links">
+      <li><a href="index.html#curriculum">커리큘럼</a></li>
+      <li><a href="schedule.html" class="active">일정</a></li>
+      <li><a href="qna.html">Q&A</a></li>
+      <li><a href="access.html">강의자료</a></li>
+    </ul>
+    <a href="apply.html" class="nav-cta">수강 신청</a>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>일정 안내</h1>
+      <p>각 회차는 현장 실습 위주로 진행됩니다</p>
+    </div>
+
+    <div class="schedule-card">
+      <div class="schedule-card-inner">
+        <div class="schedule-num">1강</div>
+        <div class="schedule-info">
+          <div class="schedule-title">내 컴퓨터에 AI 개발자 앉히기</div>
+          <div class="schedule-meta"><span>📅 4월 1일 (화)</span><span>🕐 19:00 ~ 21:00</span></div>
+        </div>
+        <span class="schedule-badge badge-open">신청가능</span>
+      </div>
+    </div>
+    <div class="schedule-card">
+      <div class="schedule-card-inner">
+        <div class="schedule-num">2강</div>
+        <div class="schedule-info">
+          <div class="schedule-title">만든 걸 세상에 내보내기</div>
+          <div class="schedule-meta"><span>📅 4월 8일 (화)</span><span>🕐 19:00 ~ 21:00</span></div>
+        </div>
+        <span class="schedule-badge badge-open">신청가능</span>
+      </div>
+    </div>
+    <div class="schedule-card">
+      <div class="schedule-card-inner">
+        <div class="schedule-num">3강</div>
+        <div class="schedule-info">
+          <div class="schedule-title">외부 세계와 연결하기</div>
+          <div class="schedule-meta"><span>📅 일정 확정 시 안내</span><span>🕐 19:00 ~ 21:00</span></div>
+        </div>
+        <span class="schedule-badge badge-soon">준비중</span>
+      </div>
+    </div>
+    <div class="schedule-card">
+      <div class="schedule-card-inner">
+        <div class="schedule-num">4강</div>
+        <div class="schedule-info">
+          <div class="schedule-title">혼자서도, 함께도 계속 만들기</div>
+          <div class="schedule-meta"><span>📅 일정 확정 시 안내</span><span>🕐 19:00 ~ 21:00</span></div>
+        </div>
+        <span class="schedule-badge badge-soon">준비중</span>
+      </div>
+    </div>
+
+    <div class="section-divider"><span>📅 캘린더</span></div>
+    <div class="calendar-wrap" id="scheduleCalendar"></div>
+
+    <div class="section-divider"><span>ℹ️ 안내 사항</span></div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="info-card-icon">🕖</div>
+        <h4>강의 시간</h4>
+        <p>오후 7:00 ~ 9:00</p>
+        <div class="sub">2시간 수업 + 여유시간</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📍</div>
+        <h4>장소</h4>
+        <p>누리꿈스퀘어 8층 회의실</p>
+        <div class="sub">서울특별시 마포구 월드컵북로 396</div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">💻</div>
+        <h4>준비물</h4>
+        <p>개인 노트북 필수</p>
+        <div class="sub">강의별 준비물이 다릅니다<br><a href="qna.html">Q&A 페이지에서 확인</a></div>
+      </div>
+      <div class="info-card">
+        <div class="info-card-icon">📞</div>
+        <h4>문의</h4>
+        <ul class="contact-links">
+          <li><span>💬</span> <a href="#">오픈카톡 문의하기</a></li>
+          <li><span>📧</span> <a href="mailto:psol@hellovr.kr">psol@hellovr.kr</a></li>
+          <li><span>📱</span> 전화 문의 가능</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="apply-cta">
+      <h2>수강 신청</h2>
+      <p>관심 있는 회차를 선택하고 신청해 보세요</p>
+      <a href="apply.html" class="btn-primary">수강 신청하기</a>
+    </div>
+
+    <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+
+  <footer>
+    <p>© 2026 바이브코딩 워크숍. 비개발자를 위한 Claude Code 실전 강의.</p>
+  </footer>
+
+  <button class="chatbot-toggle" onclick="toggleChat()">💬</button>
+  <div class="chatbot-panel" id="chatPanel">
+    <div class="chatbot-header">
+      <div class="chatbot-avatar">🤖</div>
+      <div class="chatbot-header-text">
+        <h4>바이브코딩 도우미</h4>
+        <p>자주 묻는 질문에 답해드려요</p>
+      </div>
+      <button class="chatbot-close" onclick="toggleChat()">✕</button>
+    </div>
+    <div class="chatbot-body" id="chatBody">
+      <div class="chat-msg bot">
+        <div class="chat-bubble">안녕하세요! 바이브코딩 워크숍에 관심 가져주셔서 감사합니다 😊<br><br>궁금한 점을 아래 버튼으로 물어보세요!</div>
+      </div>
+    </div>
+    <div class="chatbot-quick">
+      <button class="quick-btn" onclick="askBot('비용')">수강료가 얼마인가요?</button>
+      <button class="quick-btn" onclick="askBot('준비물')">준비물이 뭔가요?</button>
+      <button class="quick-btn" onclick="askBot('장소')">장소가 어디인가요?</button>
+      <button class="quick-btn" onclick="askBot('시간')">시간이 어떻게 되나요?</button>
+      <button class="quick-btn" onclick="askBot('코딩')">코딩 몰라도 되나요?</button>
+      <button class="quick-btn" onclick="askBot('환불')">환불 가능한가요?</button>
+      <button class="quick-btn" onclick="askBot('일정')">다음 일정은 언제인가요?</button>
+      <button class="quick-btn" onclick="askBot('주차')">주차 되나요?</button>
+    </div>
+  </div>
+
+  <script>
+    // 캘린더 공통
+    const EVENTS = {
+      '2026-04-01': { label: '1강', bg: 'rgba(108,92,231,0.12)', color: '#6C5CE7', textColor: '#6C5CE7' },
+      '2026-04-08': { label: '2강', bg: 'rgba(0,180,181,0.12)', color: '#00B4B5', textColor: '#00B4B5' },
+    };
+
+    function buildCalendar(container, year, month) {
+      const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+      container.innerHTML = `
+        <div class="calendar-header">
+          <h3 id="calTitle">${year}년 ${months[month]}</h3>
+          <div class="calendar-nav">
+            <button onclick="navMonth(-1)">‹</button>
+            <button onclick="navMonth(1)">›</button>
+          </div>
+        </div>
+        <div class="calendar-grid" id="calGrid"></div>`;
+
+      const grid = container.querySelector('#calGrid');
+      ['일','월','화','수','목','금','토'].forEach(d => {
+        const el = document.createElement('div');
+        el.className = 'cal-day-name';
+        el.textContent = d;
+        grid.appendChild(el);
+      });
+
+      const firstDay = new Date(year, month, 1).getDay();
+      const daysInMonth = new Date(year, month + 1, 0).getDate();
+      const today = new Date();
+
+      for (let i = 0; i < firstDay; i++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day empty';
+        grid.appendChild(el);
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+        const el = document.createElement('div');
+        el.className = 'cal-day';
+        const dateStr = year + '-' + String(month + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+
+        if (today.getFullYear() === year && today.getMonth() === month && today.getDate() === d) {
+          el.classList.add('today');
+        }
+
+        if (EVENTS[dateStr]) {
+          const ev = EVENTS[dateStr];
+          el.classList.add('has-event');
+          el.style.background = ev.bg;
+          el.style.color = ev.textColor;
+          el.innerHTML = d + '<span class="event-dot" style="background:' + ev.color + '"></span><span class="event-label" style="color:' + ev.color + '">' + ev.label + '</span>';
+        } else {
+          el.textContent = d;
+        }
+        grid.appendChild(el);
+      }
+    }
+
+    let curYear = 2026, curMonth = 3;
+    function navMonth(delta) {
+      curMonth += delta;
+      if (curMonth > 11) { curMonth = 0; curYear++; }
+      if (curMonth < 0) { curMonth = 11; curYear--; }
+      buildCalendar(document.getElementById('scheduleCalendar'), curYear, curMonth);
+    }
+    buildCalendar(document.getElementById('scheduleCalendar'), curYear, curMonth);
+
+    // 챗봇
+    function toggleChat() { document.getElementById('chatPanel').classList.toggle('open'); }
+
+    const FAQ = {
+      '비용': '각 강의당 5만원입니다.\nClaude Pro 구독비($20/월)는 별도입니다.\n전체 수강 시 패키지 할인은 문의해 주세요!',
+      '준비물': '기본: 개인 노트북 (충전 완료!)\n1강: Claude 가입 + 유료 구독\n2강: GitHub·Vercel 가입 + 아이디어 구상\n3강: 해외 결제 카드 (선택)\n4강: 스마트폰\n\n자세한 내용은 Q&A 페이지를 참고하세요!',
+      '장소': '누리꿈스퀘어 8층 회의실에서 진행됩니다.\n📍 서울특별시 마포구 월드컵북로 396\n지하철 6호선 디지털미디어시티역 근처입니다.',
+      '시간': '매 회차 오후 7시 ~ 9시 (2시간)입니다.\n실습이 길어지면 여유있게 진행할 수 있습니다.',
+      '코딩': '네, 전혀 몰라도 됩니다! 🙌\n이 워크숍은 비개발자를 위해 설계되었습니다.\n코드를 직접 쓰지 않고, AI에게 말로 지시하는 방식입니다.',
+      '환불': '환불 관련 안내는 오픈카톡 또는 이메일(psol@hellovr.kr)로 문의해 주시면 빠르게 안내드리겠습니다.',
+      '일정': '1강: 4월 1일(화) / 2강: 4월 8일(화)\n3강, 4강은 일정 확정 후 안내드리겠습니다.\n매주 화요일 저녁 7시 ~ 9시에 진행됩니다.',
+      '주차': '누리꿈스퀘어 건물 내 유료 주차가 가능합니다.\n대중교통 이용을 권장드립니다. (6호선 디지털미디어시티역)',
+    };
+    const Q_MAP = {
+      '비용':'수강료가 얼마인가요?','준비물':'준비물이 뭔가요?','장소':'장소가 어디인가요?',
+      '시간':'시간이 어떻게 되나요?','코딩':'코딩 몰라도 되나요?','환불':'환불 가능한가요?',
+      '일정':'다음 일정은 언제인가요?','주차':'주차 되나요?'
+    };
+    function askBot(key) {
+      const body = document.getElementById('chatBody');
+      const u = document.createElement('div');
+      u.className = 'chat-msg user';
+      u.innerHTML = '<div class="chat-bubble">' + Q_MAP[key] + '</div>';
+      body.appendChild(u);
+      setTimeout(() => {
+        const b = document.createElement('div');
+        b.className = 'chat-msg bot';
+        b.innerHTML = '<div class="chat-bubble">' + FAQ[key].replace(/\n/g,'<br>') + '</div>';
+        body.appendChild(b);
+        body.scrollTop = body.scrollHeight;
+      }, 400);
+      body.scrollTop = body.scrollHeight;
+    }
+  </script>
+</body>
+</html>

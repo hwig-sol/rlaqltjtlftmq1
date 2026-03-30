@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>강의자료 — 바이브코딩 워크숍</title>
+  <link rel="stylesheet" href="common.css">
+  <style>
+    .container { max-width: 520px; margin: 0 auto; padding: 140px 24px 80px; }
+    .page-header { text-align: center; margin-bottom: 48px; }
+    .page-header h1 { font-size: 2.4rem; font-weight: 900; margin-bottom: 12px; }
+    .page-header p { color: var(--text-muted); font-size: 1rem; }
+
+    .access-box {
+      background: var(--bg-card); border-radius: var(--radius); padding: 48px;
+      border: 1px solid var(--border); box-shadow: var(--shadow);
+      text-align: center;
+    }
+    .access-icon { font-size: 3rem; margin-bottom: 20px; }
+    .access-box > p {
+      color: var(--text-muted); font-size: 0.95rem; margin-bottom: 28px;
+    }
+    .access-input-group { display: flex; gap: 12px; }
+    .access-input-group input {
+      flex: 1; padding: 14px 18px; border-radius: 12px;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--text); font-size: 1rem; font-family: inherit;
+      text-align: center; letter-spacing: 4px;
+    }
+    .access-input-group input:focus { outline: none; border-color: var(--primary); }
+    .access-btn {
+      padding: 14px 24px; border-radius: 12px; font-weight: 700;
+      background: var(--gradient); color: #fff; border: none; cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .access-btn:hover { transform: translateY(-1px); }
+    .access-error {
+      color: var(--color-4); font-size: 0.85rem; margin-top: 12px; display: none;
+    }
+
+    @media (max-width: 768px) {
+      .access-box { padding: 32px 24px; }
+      .access-input-group { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="logo">VIBE CODING</a>
+    <ul class="nav-links">
+      <li><a href="index.html#curriculum">커리큘럼</a></li>
+      <li><a href="schedule.html">일정</a></li>
+      <li><a href="qna.html">Q&A</a></li>
+      <li><a href="access.html" class="active">강의자료</a></li>
+    </ul>
+    <a href="apply.html" class="nav-cta">수강 신청</a>
+  </nav>
+
+  <div class="container">
+    <div class="page-header">
+      <h1>강의자료 열람</h1>
+      <p>현장에서 제공된 비밀번호를 입력하세요</p>
+    </div>
+
+    <div class="access-box">
+      <div class="access-icon">🔐</div>
+      <p>각 회차 강의 시작 시 안내되는 비밀번호를 입력하면<br>해당 강의 자료에 접근할 수 있습니다.</p>
+      <div class="access-input-group">
+        <input type="password" id="accessCode" placeholder="비밀번호 입력" maxlength="20">
+        <button class="access-btn" onclick="checkAccess()">확인</button>
+      </div>
+      <p class="access-error" id="accessError">비밀번호가 올바르지 않습니다.</p>
+    </div>
+
+    <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+  </div>
+
+  <footer>
+    <p>© 2026 바이브코딩 워크숍. 비개발자를 위한 Claude Code 실전 강의.</p>
+  </footer>
+
+  <script>
+    const LECTURE_PASSWORDS = {
+      'vibe1': 'lecture-1.html',
+      'vibe2': 'lecture-2.html',
+      'vibe3': 'lecture-3.html',
+      'vibe4': 'lecture-4.html',
+    };
+
+    function checkAccess() {
+      const code = document.getElementById('accessCode').value.trim().toLowerCase();
+      const errorEl = document.getElementById('accessError');
+      if (LECTURE_PASSWORDS[code]) {
+        errorEl.style.display = 'none';
+        window.location.href = LECTURE_PASSWORDS[code];
+      } else {
+        errorEl.style.display = 'block';
+        document.getElementById('accessCode').value = '';
+      }
+    }
+
+    document.getElementById('accessCode').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') checkAccess();
+    });
+  </script>
+</body>
+</html>
