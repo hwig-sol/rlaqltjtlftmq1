@@ -114,17 +114,31 @@
     }
     .showcase-item {
       width: 320px; border-radius: 12px; flex-shrink: 0;
-      background: var(--bg-card); border: 1px solid var(--border);
+      background: var(--bg-card); border: 2px solid;
       overflow: hidden; position: relative;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
+    .showcase-item:nth-child(7n+1) { border-color: var(--color-1); }
+    .showcase-item:nth-child(7n+2) { border-color: var(--color-2); }
+    .showcase-item:nth-child(7n+3) { border-color: var(--color-3); }
+    .showcase-item:nth-child(7n+4) { border-color: var(--color-4); }
+    .showcase-item:nth-child(7n+5) { border-color: #3B82F6; }
+    .showcase-item:nth-child(7n+6) { border-color: #8B5CF6; }
+    .showcase-item:nth-child(7n) { border-color: #10B981; }
     .showcase-item img { width: 100%; height: 200px; object-fit: cover; display: block; }
     .showcase-item .placeholder { padding: 20px; height: 200px; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.8rem; text-align: center; }
     .showcase-label {
-      padding: 10px 14px; font-size: 0.78rem; font-weight: 600;
-      color: var(--text); text-align: center; background: var(--bg-card);
-      border-top: 1px solid var(--border);
+      padding: 10px 14px; font-size: 0.8rem; font-weight: 700;
+      text-align: center; background: var(--bg-card);
+      border-top: 2px solid inherit;
     }
+    .showcase-item:nth-child(7n+1) .showcase-label { color: var(--color-1); border-color: var(--color-1); }
+    .showcase-item:nth-child(7n+2) .showcase-label { color: var(--color-2); border-color: var(--color-2); }
+    .showcase-item:nth-child(7n+3) .showcase-label { color: var(--color-3); border-color: var(--color-3); }
+    .showcase-item:nth-child(7n+4) .showcase-label { color: var(--color-4); border-color: var(--color-4); }
+    .showcase-item:nth-child(7n+5) .showcase-label { color: #3B82F6; border-color: #3B82F6; }
+    .showcase-item:nth-child(7n+6) .showcase-label { color: #8B5CF6; border-color: #8B5CF6; }
+    .showcase-item:nth-child(7n) .showcase-label { color: #10B981; border-color: #10B981; }
     .showcase-hint {
       text-align: center; margin-top: 16px; padding: 0 20px;
       color: var(--text-muted); font-size: 0.8rem;
