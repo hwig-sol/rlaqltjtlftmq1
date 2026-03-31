@@ -16,6 +16,7 @@
       padding: 60px 80px; text-align: center; position: relative;
     }
     .slide.active { display: flex; }
+    .slide.left { text-align: left; align-items: flex-start; }
 
     /* 타이포 */
     .slide h1 { font-size: 3.2rem; font-weight: 900; line-height: 1.3; margin-bottom: 20px; }
@@ -27,6 +28,7 @@
     .slide .accent { color: #00B4B5; }
     .slide .warn { color: #E85D5C; }
     .slide .sub { font-size: 1rem; color: rgba(255,255,255,0.45); margin-top: 12px; }
+    .slide .sub-big { font-size: 1.15rem; color: #00B4B5; font-weight: 600; margin-bottom: 20px; }
 
     /* 배지 */
     .part-badge {
@@ -40,7 +42,7 @@
     .part-badge.blue { background: rgba(59,130,246,0.15); color: #3B82F6; border-color: rgba(59,130,246,0.3); }
 
     /* 리스트 */
-    .slide-list { list-style: none; text-align: left; margin: 24px auto; max-width: 700px; }
+    .slide-list { list-style: none; text-align: left; margin: 24px auto; max-width: 750px; }
     .slide-list li {
       font-size: 1.35rem; font-weight: 700; padding: 14px 0;
       border-bottom: 1px solid rgba(255,255,255,0.08);
@@ -48,7 +50,27 @@
     }
     .slide-list li:last-child { border-bottom: none; }
     .slide-list .icon { font-size: 1.4rem; flex-shrink: 0; }
-    .slide-list .desc { font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 4px; }
+    .slide-list .desc { display: block; font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 6px; }
+
+    /* 심플 리스트 (글머리 점) */
+    .bullet-list { list-style: none; text-align: left; margin: 20px auto; max-width: 750px; }
+    .bullet-list li {
+      font-size: 1.25rem; font-weight: 600; padding: 10px 0 10px 24px;
+      position: relative; color: rgba(255,255,255,0.85);
+    }
+    .bullet-list li::before {
+      content: '•'; position: absolute; left: 0; color: #6C5CE7; font-weight: 900;
+    }
+    .bullet-list li .em { color: #00B4B5; }
+    .bullet-list li .dim { font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.45); }
+
+    /* 하이라이트 박스 */
+    .highlight-box {
+      background: rgba(108,92,231,0.08); border: 1px solid rgba(108,92,231,0.25);
+      border-radius: 16px; padding: 20px 28px; margin: 20px auto; max-width: 750px;
+      text-align: left;
+    }
+    .highlight-box p { font-size: 1.15rem; font-weight: 600; color: #6C5CE7; }
 
     /* 코드블록 */
     .code-block {
@@ -69,6 +91,7 @@
       background: rgba(255,255,255,0.02);
     }
     .img-placeholder.wide { max-width: 900px; height: 400px; }
+    .img-placeholder.small { max-width: 500px; height: 280px; }
 
     /* 비교 그리드 */
     .compare-grid { display: grid; grid-template-columns: 1fr auto 1fr; gap: 24px; align-items: center; margin: 32px auto; max-width: 800px; }
@@ -84,13 +107,59 @@
 
     /* 타임라인 */
     .timeline { text-align: left; max-width: 700px; margin: 24px auto; }
-    .timeline-item { display: flex; gap: 16px; margin-bottom: 20px; align-items: flex-start; }
-    .timeline-time {
-      font-size: 0.9rem; font-weight: 700; color: #6C5CE7;
-      min-width: 110px; padding-top: 4px;
+    .timeline-item { display: flex; gap: 16px; margin-bottom: 16px; align-items: flex-start; }
+    .timeline-num {
+      font-size: 0.85rem; font-weight: 800; color: #fff; min-width: 32px; height: 32px;
+      background: #6C5CE7; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
-    .timeline-content { font-size: 1.15rem; font-weight: 700; }
-    .timeline-content span { display: block; font-size: 0.9rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 2px; }
+    .timeline-content { font-size: 1.2rem; font-weight: 700; padding-top: 3px; }
+    .timeline-content span { display: block; font-size: 0.95rem; font-weight: 400; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+    /* 실습 박스 */
+    .practice-box {
+      background: rgba(0,180,181,0.06); border: 1px solid rgba(0,180,181,0.2);
+      border-radius: 16px; padding: 28px 36px; margin: 20px auto; max-width: 700px; text-align: left;
+    }
+    .practice-box .label { font-size: 0.8rem; font-weight: 800; color: #00B4B5; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+    .practice-box p { font-size: 1.15rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 6px; }
+    .practice-box .quote {
+      font-size: 1.1rem; font-weight: 500; color: #00B4B5; font-style: italic;
+      padding: 12px 16px; background: rgba(0,180,181,0.06); border-radius: 10px; margin-top: 10px;
+    }
+
+    /* 여정 카드 (4강 소개) */
+    .journey-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin: 28px auto; max-width: 850px; }
+    .journey-card {
+      border-radius: 14px; padding: 24px 18px; text-align: center;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    }
+    .journey-card .num { font-size: 0.75rem; font-weight: 800; letter-spacing: 2px; margin-bottom: 8px; }
+    .journey-card h4 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; color: #fff; }
+    .journey-card p { font-size: 0.8rem; font-weight: 400; color: rgba(255,255,255,0.5); line-height: 1.5; }
+    .journey-card:nth-child(1) { border-color: rgba(108,92,231,0.3); }
+    .journey-card:nth-child(1) .num { color: #6C5CE7; }
+    .journey-card:nth-child(2) { border-color: rgba(0,180,181,0.3); }
+    .journey-card:nth-child(2) .num { color: #00B4B5; }
+    .journey-card:nth-child(3) { border-color: rgba(232,163,23,0.3); }
+    .journey-card:nth-child(3) .num { color: #E8A317; }
+    .journey-card:nth-child(4) { border-color: rgba(59,130,246,0.3); }
+    .journey-card:nth-child(4) .num { color: #3B82F6; }
+    .journey-card.current { border-width: 2px; border-color: #6C5CE7; background: rgba(108,92,231,0.06); }
+
+    /* 2강 안내 카드 */
+    .announce-card {
+      background: rgba(0,180,181,0.06); border: 2px solid rgba(0,180,181,0.25);
+      border-radius: 20px; padding: 40px 48px; margin: 28px auto; max-width: 700px;
+      text-align: left;
+    }
+    .announce-card .row { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; font-size: 1.2rem; font-weight: 700; }
+    .announce-card .row .icon { font-size: 1.3rem; }
+    .announce-card .price {
+      display: inline-block; margin-top: 12px; padding: 10px 24px; border-radius: 12px;
+      background: rgba(232,93,92,0.1); border: 1px solid rgba(232,93,92,0.25);
+      font-size: 1.2rem; font-weight: 800; color: #E85D5C;
+    }
 
     /* 네비게이션 */
     .slide-nav {
@@ -108,25 +177,13 @@
     .slide-nav button:hover { background: rgba(255,255,255,0.1); }
     .slide-nav button:disabled { opacity: 0.3; cursor: default; }
     .slide-counter { font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.4); }
-    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--gradient); z-index: 101; transition: width 0.3s; }
+    .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(135deg, #6C5CE7, #00B4B5); z-index: 101; transition: width 0.3s; }
+    .key-hint { position: fixed; bottom: 70px; right: 40px; z-index: 100; font-size: 0.75rem; color: rgba(255,255,255,0.2); }
 
-    /* 실습 박스 */
-    .practice-box {
-      background: rgba(0,180,181,0.06); border: 1px solid rgba(0,180,181,0.2);
-      border-radius: 16px; padding: 28px 36px; margin: 20px auto; max-width: 700px; text-align: left;
-    }
-    .practice-box .label { font-size: 0.8rem; font-weight: 800; color: #00B4B5; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
-    .practice-box p { font-size: 1.15rem; font-weight: 600; color: rgba(255,255,255,0.85); margin-bottom: 6px; }
-    .practice-box .quote {
-      font-size: 1.1rem; font-weight: 500; color: #00B4B5; font-style: italic;
-      padding: 12px 16px; background: rgba(0,180,181,0.06); border-radius: 10px; margin-top: 10px;
-    }
-
-    /* 키 힌트 */
-    .key-hint {
-      position: fixed; bottom: 70px; right: 40px; z-index: 100;
-      font-size: 0.75rem; color: rgba(255,255,255,0.2);
-    }
+    /* 김비서 2열 레이아웃 */
+    .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; max-width: 950px; margin: 0 auto; text-align: left; }
+    .split-layout .text-side h2 { font-size: 2.2rem; margin-bottom: 8px; }
+    .split-layout .img-side .img-placeholder { margin: 0; height: 380px; }
 
     @media (max-width: 768px) {
       .slide { padding: 40px 24px; }
@@ -136,6 +193,8 @@
       .code-block .cmd { font-size: 1rem; }
       .compare-grid { grid-template-columns: 1fr; }
       .compare-arrow { transform: rotate(90deg); justify-self: center; }
+      .journey-grid { grid-template-columns: repeat(2, 1fr); }
+      .split-layout { grid-template-columns: 1fr; }
       .slide-nav { padding: 12px 20px; }
     }
   </style>
@@ -146,7 +205,7 @@
 
   <div class="slide-wrap" id="slideWrap">
 
-    <!-- ===== 슬라이드 1: 표지 ===== -->
+    <!-- ===== 1: 표지 ===== -->
     <div class="slide active">
       <div class="part-badge">1강 · 2026.04.01</div>
       <h1>내 컴퓨터에<br><span class="highlight">AI 개발자</span> 앉히기</h1>
@@ -154,224 +213,227 @@
       <p class="sub">바이브코딩 워크숍 · 비개발자를 위한 Claude Code 실전 강의</p>
     </div>
 
-    <!-- ===== 슬라이드 2: 오늘의 목표 ===== -->
+    <!-- ===== 2: 강사 소개 ===== -->
     <div class="slide">
-      <div class="part-badge">PART 1 · 오리엔테이션</div>
-      <h2>오늘의 목표</h2>
-      <div class="compare-grid">
-        <div class="compare-box compare-before">
-          <h4>Before</h4>
-          <div class="emoji">😰</div>
-          <p>"코딩? 나는 못하는데..."</p>
-        </div>
-        <div class="compare-arrow">→</div>
-        <div class="compare-box compare-after">
-          <h4>After</h4>
-          <div class="emoji">🤩</div>
-          <p>"AI한테 말하니까<br>진짜 만들어지네!"</p>
-        </div>
-      </div>
-      <p class="big">퇴근 전 30분 걸릴 업무를 <span class="accent">5분</span>에 끝내봅니다</p>
-    </div>
-
-    <!-- ===== 슬라이드 3: 바이브코딩이란 ===== -->
-    <div class="slide">
-      <div class="part-badge">PART 1 · 오리엔테이션</div>
-      <h2><span class="highlight">바이브 코딩</span>이란?</h2>
-      <ul class="slide-list">
-        <li><span class="icon">🎵</span><div>코드를 직접 쓰는 게 아니라, <strong>말로 지시</strong>해서 만드는 것<span class="desc">마치 디자이너에게 "이렇게 만들어줘"라고 말하듯이</span></div></li>
-        <li><span class="icon">🤖</span><div>AI가 코드를 쓰고, 나는 <strong>방향을 잡는다</strong><span class="desc">아이디어와 판단력만 있으면 됩니다</span></div></li>
-        <li><span class="icon">🚀</span><div>2025년부터 폭발적으로 성장 중인 <strong>글로벌 트렌드</strong><span class="desc">비개발자도 서비스를 만들 수 있는 시대</span></div></li>
+      <div class="part-badge">강사 소개</div>
+      <div class="img-placeholder" style="max-width:180px; height:180px; border-radius:50%; margin-bottom:24px;">강사 사진</div>
+      <h2>강사명</h2>
+      <p class="sub-big">바이브코딩 워크숍 강사</p>
+      <ul class="bullet-list">
+        <li>비개발자 출신, AI에게 말로 지시해서 서비스를 만듭니다</li>
+        <li>"개발을 모르는 사람의 눈높이"에서 가르칩니다</li>
+        <li>Claude Code로 업무 자동화 도구를 직접 제작·운영 중</li>
       </ul>
     </div>
 
-    <!-- ===== 슬라이드 4: Claude 앱 vs Claude Code ===== -->
+    <!-- ===== 3: 개발만이 아닙니다 ===== -->
     <div class="slide">
-      <div class="part-badge">PART 1 · 오리엔테이션</div>
-      <h2>Claude 앱 vs Claude Code</h2>
-      <div class="compare-grid">
-        <div class="compare-box compare-before" style="border-color: rgba(108,92,231,0.3); background: rgba(108,92,231,0.08);">
-          <h4 style="color: #6C5CE7;">Claude 앱</h4>
-          <div class="emoji">💬</div>
-          <p>브라우저에서 대화<br>질문 → 답변</p>
-        </div>
-        <div class="compare-arrow">vs</div>
-        <div class="compare-box compare-after">
-          <h4>Claude Code</h4>
-          <div class="emoji">💻</div>
-          <p>내 컴퓨터에서 작업<br>파일 읽기·쓰기·실행</p>
-        </div>
+      <div class="part-badge">바이브 코딩이란</div>
+      <h1>개발만이 아닙니다</h1>
+      <ul class="slide-list">
+        <li>
+          <span class="icon">📋</span>
+          <div><strong>문서/기획</strong> — 사업 계획서, 시장 조사, 마케팅 자료, 구글드라이브 1800개 파일 정리
+            <span class="desc">기획자·마케터가 AI에게 말로 지시해서 문서를 자동 생성</span>
+          </div>
+        </li>
+        <li>
+          <span class="icon">🔧</span>
+          <div><strong>업무 관리</strong> — 김비서 대시보드, 노션/구글 연동, 업무 자동화
+            <span class="desc">반복 업무를 AI가 대신 처리하고, 대시보드로 한눈에 확인</span>
+          </div>
+        </li>
+        <li>
+          <span class="icon">🌐</span>
+          <div><strong>사이트/도구 개발</strong> — 웹사이트, 앱, 포트폴리오, 게임 데모
+            <span class="desc">말로 지시하면 AI가 코드를 쓰고 결과물을 만들어줍니다</span>
+          </div>
+        </li>
+      </ul>
+      <div class="highlight-box">
+        <p>이 세 가지가 동등하게 "말로 지시할 수 있는 것들"입니다.<br>개발이 특별한 게 아니에요. 전부 같은 방식으로 만들 수 있습니다.</p>
       </div>
-      <p class="big">오늘 <span class="accent">둘 다</span> 직접 써봅니다</p>
     </div>
 
-    <!-- ===== 슬라이드 5: 오늘 일정 ===== -->
+    <!-- ===== 4: 해커톤 사례 ===== -->
     <div class="slide">
-      <div class="part-badge">PART 1 · 오리엔테이션</div>
+      <div class="part-badge">실제 사례</div>
+      <h1>변호사가 해커톤에서<br><span class="highlight">우승했습니다</span></h1>
+      <p class="sub-big">Anthropic Claude Code 해커톤 (2026년 2월)</p>
+      <ul class="bullet-list">
+        <li>13,000명 지원 → 500명 선발 → <span class="em">1주일간 개발</span></li>
+        <li>1등: Mike Brown — 개인 상해 전문 <span class="em">변호사 (개발자 아님)</span></li>
+        <li>심장내과 의사, 우간다 도로 기술자 등 <span class="em">비개발자들이 우승</span></li>
+        <li>수천 명이 쓰는 AI 제품을 코딩 경험 없이 <span class="em">1주일 만에 완성</span></li>
+      </ul>
+      <div class="highlight-box">
+        <p>개발자가 아니어도 됩니다. 중요한 건 아이디어입니다.</p>
+      </div>
+    </div>
+
+    <!-- ===== 5: 4강 여정 소개 ===== -->
+    <div class="slide">
+      <div class="part-badge">워크숍 여정</div>
+      <h2>4강으로 완성하는 <span class="highlight">바이브코딩</span></h2>
+      <div class="journey-grid">
+        <div class="journey-card current">
+          <div class="num">1강 ← 오늘</div>
+          <h4>AI 개발자 앉히기</h4>
+          <p>Claude Code 설치<br>실전 업무 자동화 체험</p>
+        </div>
+        <div class="journey-card">
+          <div class="num">2강</div>
+          <h4>세상에 내보내기</h4>
+          <p>내 아이디어를 웹사이트로<br>GitHub → Vercel 배포</p>
+        </div>
+        <div class="journey-card">
+          <div class="num">3강</div>
+          <h4>외부와 연결하기</h4>
+          <p>API 연동, MCP 서버<br>살아있는 서비스로</p>
+        </div>
+        <div class="journey-card">
+          <div class="num">4강</div>
+          <h4>계속 만들기</h4>
+          <p>멀티 에이전트, 협업<br>독립 개발 역량</p>
+        </div>
+      </div>
+      <p class="sub">오늘은 첫 번째 여정입니다. AI와 대화하며 결과물을 직접 만들어봅니다.</p>
+    </div>
+
+    <!-- ===== 6: 오늘 일정 ===== -->
+    <div class="slide">
+      <div class="part-badge">1강 순서</div>
       <h2>오늘 일정</h2>
       <div class="timeline">
-        <div class="timeline-item"><div class="timeline-time">19:00 ~ 19:15</div><div class="timeline-content">오리엔테이션<span>강사 소개, 바이브코딩이란, 오늘의 목표</span></div></div>
-        <div class="timeline-item"><div class="timeline-time">19:15 ~ 19:40</div><div class="timeline-content">Claude 앱 실전 체험<span>회의록 요약, 매출 분석, 이미지 분석</span></div></div>
-        <div class="timeline-item"><div class="timeline-time">19:40 ~ 20:00</div><div class="timeline-content">Claude Code 설치 & 첫 실행<span>설치, 첫 대화, 권한 이해</span></div></div>
-        <div class="timeline-item"><div class="timeline-time" style="color: rgba(255,255,255,0.3);">20:00 ~ 20:10</div><div class="timeline-content" style="color: rgba(255,255,255,0.4);">쉬는 시간</div></div>
-        <div class="timeline-item"><div class="timeline-time">20:10 ~ 20:40</div><div class="timeline-content">Claude Code 실전 업무 자동화<span>대시보드, 보고서, 업무비서 만들기</span></div></div>
-        <div class="timeline-item"><div class="timeline-time">20:40 ~ 20:55</div><div class="timeline-content">내 서비스 아이디어 구상<span>2강에서 만들 것 정하기</span></div></div>
-        <div class="timeline-item"><div class="timeline-time">20:55 ~</div><div class="timeline-content">마무리 & QnA</div></div>
+        <div class="timeline-item"><div class="timeline-num">1</div><div class="timeline-content">오리엔테이션<span>강사 소개, 바이브코딩이란, 워크숍 여정</span></div></div>
+        <div class="timeline-item"><div class="timeline-num">2</div><div class="timeline-content">Claude Desktop 설치<span>앱 설치, 실습 폴더 연결, 크롬 연동</span></div></div>
+        <div class="timeline-item"><div class="timeline-num">3</div><div class="timeline-content">사이트 분석 리포트 만들기<span>경쟁사/자사 사이트를 AI가 분석</span></div></div>
+        <div class="timeline-item"><div class="timeline-num" style="background:rgba(255,255,255,0.15);">☕</div><div class="timeline-content" style="color:rgba(255,255,255,0.4);">쉬는 시간</div></div>
+        <div class="timeline-item"><div class="timeline-num">4</div><div class="timeline-content">김비서 만들기 실습<span>업무 자동화 도구를 직접 따라 만들기</span></div></div>
+        <div class="timeline-item"><div class="timeline-num">5</div><div class="timeline-content">마무리 & 2강 안내</div></div>
       </div>
     </div>
 
-    <!-- ===== 슬라이드 6: 파트2 표지 ===== -->
+    <!-- ===== 7: Claude Desktop 설치 ===== -->
     <div class="slide">
-      <div class="part-badge teal">PART 2 · Claude 앱 실전 체험</div>
-      <h1>Claude 앱으로<br><span class="highlight">업무 해결</span>하기</h1>
-      <p>브라우저에서 바로 시작합니다 — claude.ai</p>
+      <div class="part-badge teal">설치</div>
+      <h1>Claude Desktop 설치</h1>
+      <p class="sub-big">오늘은 이것만 설치하면 됩니다</p>
+      <ul class="bullet-list">
+        <li>Claude 앱 다운로드 <span class="dim">(claude.ai/download)</span></li>
+        <li>설치 후 실행 → <span class="em">Claude Pro 계정</span>으로 로그인</li>
+        <li>오른쪽에 <span class="em">"코드" 탭</span> 클릭 → 이 화면이 나오면 성공</li>
+        <li>먼저 되신 분은 옆 사람 도와주세요</li>
+      </ul>
+      <div class="img-placeholder">Claude Desktop 설치 완료 화면 (추가 예정)</div>
     </div>
 
-    <!-- ===== 슬라이드 7: 실습1 회의록 ===== -->
+    <!-- ===== 8: 실습 폴더 연결 ===== -->
     <div class="slide">
-      <div class="part-badge teal">PART 2 · 실습 1</div>
-      <h2>회의록 요약 & 할 일 추출</h2>
+      <div class="part-badge teal">설치</div>
+      <h1>실습 폴더 연결하기</h1>
+      <p class="sub-big">Claude Code에게 우리 폴더를 알려줍시다</p>
+      <ul class="bullet-list">
+        <li>다운받은 <span class="em">워크숍-실습</span> 폴더의 위치를 확인하세요</li>
+        <li>Claude Desktop 코드 탭에서 <span class="em">폴더를 연결</span>합니다</li>
+        <li>연결되면 Claude Code가 그 폴더의 <span class="em">파일을 읽을 수 있습니다</span></li>
+      </ul>
+      <div class="img-placeholder">폴더 연결 화면 (추가 예정)</div>
+    </div>
+
+    <!-- ===== 9: 크롬 연동 ===== -->
+    <div class="slide">
+      <div class="part-badge teal">설치</div>
+      <h1>크롬 브라우저 연동</h1>
+      <p class="sub-big">Claude Code가 웹을 볼 수 있게 연결합니다</p>
+      <ul class="bullet-list">
+        <li>크롬 확장 프로그램 설치</li>
+        <li>연동하면 Claude Code가 <span class="em">웹페이지를 직접 분석</span>할 수 있습니다</li>
+        <li>경쟁사 사이트, 참고 사이트를 <span class="em">URL만 주면 자동 분석</span></li>
+      </ul>
+      <div class="img-placeholder">크롬 연동 화면 (추가 예정)</div>
+    </div>
+
+    <!-- ===== 10: 실습 — 사이트 분석 리포트 ===== -->
+    <div class="slide">
+      <div class="part-badge red">실습 1</div>
+      <h2>사이트 분석 리포트 만들기</h2>
       <div class="practice-box">
-        <div class="label">실습 방법</div>
-        <p>1. claude.ai에 <strong>회의록.txt</strong> 파일 업로드</p>
-        <p>2. 아래 프롬프트 입력:</p>
-        <div class="quote">"핵심 결정사항, 담당자별 할 일, 다음 회의 안건을 정리해줘"</div>
+        <div class="label">Claude Code에 입력</div>
+        <p>분석할 사이트 URL을 Claude Code에 알려줍니다</p>
+        <div class="quote">"이 사이트에 접속해서 구조, 디자인, 콘텐츠를 분석하고 HTML 보고서로 만들어줘"</div>
       </div>
-      <div class="img-placeholder">회의록 요약 결과 스크린샷 (추가 예정)</div>
+      <ul class="bullet-list" style="margin-top:16px;">
+        <li>경쟁사 사이트 또는 자사 사이트 <span class="em">링크만 제공</span>하면 됩니다</li>
+        <li>AI가 접속 → 분석 → <span class="em">보고서 자동 생성</span></li>
+        <li>결과물을 브라우저에서 바로 확인</li>
+      </ul>
     </div>
 
-    <!-- ===== 슬라이드 8: 실습2 매출 ===== -->
+    <!-- ===== 11: 분석 결과 확인 ===== -->
     <div class="slide">
-      <div class="part-badge teal">PART 2 · 실습 2</div>
-      <h2>매출 데이터 분석</h2>
-      <div class="practice-box">
-        <div class="label">실습 방법</div>
-        <p>1. <strong>매출데이터.csv</strong> 파일 업로드</p>
-        <p>2. 아래 프롬프트 입력:</p>
-        <div class="quote">"월별 매출 추이를 분석하고, 이상치가 있으면 알려줘"</div>
-      </div>
-      <div class="img-placeholder">매출 분석 결과 스크린샷 (추가 예정)</div>
+      <div class="part-badge red">실습 1 · 결과</div>
+      <h2>이렇게 만들어집니다</h2>
+      <div class="img-placeholder wide">사이트 분석 리포트 결과물 스크린샷 (추가 예정)</div>
+      <p class="big">URL 하나 던졌을 뿐인데,<br><span class="accent">전문 분석 보고서</span>가 완성됩니다</p>
     </div>
 
-    <!-- ===== 슬라이드 9: 실습3 이미지 ===== -->
+    <!-- ===== 12: 프롬프트 팁 ===== -->
     <div class="slide">
-      <div class="part-badge teal">PART 2 · 실습 3</div>
-      <h2>이미지 분석 & 활용</h2>
-      <div class="practice-box">
-        <div class="label">실습 방법</div>
-        <p>1. <strong>행사포스터.jpg</strong> 파일 업로드</p>
-        <p>2. 아래 프롬프트 입력:</p>
-        <div class="quote">"이 포스터 내용을 SNS 홍보 문구 3가지로 만들어줘"</div>
-      </div>
-      <div class="img-placeholder">이미지 분석 결과 스크린샷 (추가 예정)</div>
-    </div>
-
-    <!-- ===== 슬라이드 10: 프롬프트 팁 ===== -->
-    <div class="slide">
-      <div class="part-badge teal">PART 2 · 핵심 포인트</div>
+      <div class="part-badge">핵심 포인트</div>
       <h2>프롬프트 <span class="highlight">잘 쓰는 법</span></h2>
       <ul class="slide-list">
         <li><span class="icon">🎭</span><div><strong>역할 부여</strong><span class="desc">"너는 10년차 마케터야" — AI에게 전문가 역할을 입혀주세요</span></div></li>
         <li><span class="icon">🎯</span><div><strong>구체적 지시</strong><span class="desc">"분석해줘" 보다 "월별 추이 + 이상치 + 개선 제안 3가지"</span></div></li>
-        <li><span class="icon">📋</span><div><strong>출력 형식 지정</strong><span class="desc">"표 형태로" / "마크다운으로" / "500자 이내로"</span></div></li>
+        <li><span class="icon">📋</span><div><strong>출력 형식 지정</strong><span class="desc">"표 형태로" / "HTML로" / "500자 이내로"</span></div></li>
         <li><span class="icon">🔄</span><div><strong>반복 수정</strong><span class="desc">한 번에 완벽할 필요 없습니다. "좀 더 간결하게" 계속 다듬기</span></div></li>
       </ul>
     </div>
 
-    <!-- ===== 슬라이드 11: 파트3 표지 ===== -->
-    <div class="slide">
-      <div class="part-badge yellow">PART 3 · Claude Code 설치</div>
-      <h1>내 컴퓨터에<br><span class="highlight">Claude Code</span> 설치하기</h1>
-      <p>채팅이 아니라, 내 컴퓨터에서 직접 일하는 AI</p>
-    </div>
-
-    <!-- ===== 슬라이드 12: 설치 과정 ===== -->
-    <div class="slide">
-      <div class="part-badge yellow">PART 3 · 설치 실습</div>
-      <h2>설치 3단계</h2>
-      <div class="code-block">
-        <div class="comment"># 1. Node.js 설치 확인</div>
-        <div><span class="prompt">$ </span><span class="cmd">node --version</span></div>
-        <br>
-        <div class="comment"># 2. Claude Code 설치</div>
-        <div><span class="prompt">$ </span><span class="cmd">npm install -g @anthropic-ai/claude-code</span></div>
-        <br>
-        <div class="comment"># 3. 실행!</div>
-        <div><span class="prompt">$ </span><span class="cmd">claude</span></div>
-      </div>
-      <div class="img-placeholder">설치 과정 스크린샷 (추가 예정)</div>
-    </div>
-
-    <!-- ===== 슬라이드 13: 첫 대화 ===== -->
-    <div class="slide">
-      <div class="part-badge yellow">PART 3 · 첫 실행</div>
-      <h2>AI와 첫 대화</h2>
-      <div class="code-block">
-        <div class="comment"># 작업 폴더로 이동 후 claude 실행</div>
-        <div><span class="prompt">$ </span><span class="cmd">cd 워크숍-실습</span></div>
-        <div><span class="prompt">$ </span><span class="cmd">claude</span></div>
-        <br>
-        <div class="comment"># AI에게 질문</div>
-        <div><span class="prompt">You: </span><span class="cmd">이 폴더에 뭐가 있어?</span></div>
-      </div>
-      <p class="big" style="margin-top: 24px;">AI가 내 컴퓨터의 <span class="accent">파일을 직접 탐색</span>합니다</p>
-      <p class="sub">파일 읽기/쓰기/실행 권한 → 승인 흐름을 이해해봅시다</p>
-    </div>
-
-    <!-- ===== 슬라이드 14: 쉬는 시간 ===== -->
+    <!-- ===== 13: 쉬는 시간 ===== -->
     <div class="slide">
       <h1>☕</h1>
       <h2>쉬는 시간</h2>
-      <p class="big">10분 후 다시 시작합니다</p>
-      <p class="sub">20:00 ~ 20:10</p>
+      <p class="big">잠시 쉬었다가 다시 시작합니다</p>
     </div>
 
-    <!-- ===== 슬라이드 15: 파트4 표지 ===== -->
+    <!-- ===== 14: 김비서 소개 ===== -->
     <div class="slide">
-      <div class="part-badge red">PART 4 · 실전 업무 자동화</div>
-      <h1>말로 지시해서<br><span class="highlight">진짜 결과물</span> 만들기</h1>
-      <p>Claude Code로 대시보드, 보고서, 업무 비서를 만들어봅니다</p>
-    </div>
-
-    <!-- ===== 슬라이드 16: 실습4 대시보드 ===== -->
-    <div class="slide">
-      <div class="part-badge red">PART 4 · 실습 4</div>
-      <h2>매출 대시보드 자동 생성</h2>
-      <div class="practice-box">
-        <div class="label">Claude Code에 입력</div>
-        <div class="quote">"매출데이터.csv를 분석해서 차트가 있는 대시보드 HTML 만들어줘"</div>
+      <div class="part-badge yellow">실습 2</div>
+      <h1>김비서 — 대시보드</h1>
+      <p class="sub-big">Notion 연동 업무 관리 대시보드</p>
+      <ul class="bullet-list">
+        <li>/김비서 한마디면 <span class="em">업무 등록</span></li>
+        <li>그날 해야 하는 일들 정리</li>
+        <li>오늘의 뉴스 수집</li>
+        <li>KPI 달성률 업데이트</li>
+        <li>프로젝트 진행률 관리</li>
+        <li>보고서도 자동으로 만들어줍니다</li>
+      </ul>
+      <div class="highlight-box">
+        <p>/김비서 — 이 명령어 하나면 전부 됩니다</p>
       </div>
-      <div class="img-placeholder wide">대시보드 결과물 스크린샷 (추가 예정)</div>
-      <p class="sub">CSV 데이터 → 자동 차트 생성 → 브라우저에서 바로 확인</p>
     </div>
 
-    <!-- ===== 슬라이드 17: 실습5 보고서 ===== -->
+    <!-- ===== 15: 김비서 따라 만들기 ===== -->
     <div class="slide">
-      <div class="part-badge red">PART 4 · 실습 5</div>
-      <h2>웹사이트 분석 보고서</h2>
-      <div class="practice-box">
-        <div class="label">Claude Code에 입력</div>
-        <div class="quote">"이 URL에 접속해서 분석하고 HTML 보고서 만들어줘"</div>
-      </div>
-      <div class="img-placeholder wide">분석 보고서 결과물 스크린샷 (추가 예정)</div>
-      <p class="sub">실시간 웹 데이터를 가져와서 보고서로 자동 생성</p>
-    </div>
-
-    <!-- ===== 슬라이드 18: 실습6 김비서 ===== -->
-    <div class="slide">
-      <div class="part-badge red">PART 4 · 실습 6</div>
-      <h2>개인 업무 비서 만들기</h2>
+      <div class="part-badge yellow">실습 2 · 따라하기</div>
+      <h2>나만의 <span class="highlight">업무 비서</span> 만들기</h2>
       <div class="practice-box">
         <div class="label">Claude Code에 입력</div>
         <div class="quote">"서울 날씨 검색하고, 회의록 읽어서 오늘 브리핑 HTML 만들어줘"</div>
       </div>
-      <div class="img-placeholder wide">업무 비서 결과물 스크린샷 (추가 예정)</div>
-      <p class="big" style="margin-top: 16px;">AI가 <span class="accent">여러 작업을 조합</span>해서 하나의 결과물을 만듭니다</p>
+      <ul class="bullet-list" style="margin-top:16px;">
+        <li>AI가 <span class="em">여러 작업을 조합</span>해서 하나의 결과물을 만듭니다</li>
+        <li>날씨 검색 + 파일 읽기 + HTML 생성을 <span class="em">한 번에</span></li>
+        <li>내 업무에 맞게 <span class="em">커스터마이징</span> 가능</li>
+      </ul>
+      <div class="img-placeholder wide">김비서 결과물 스크린샷 (추가 예정)</div>
     </div>
 
-    <!-- ===== 슬라이드 19: 파트5 아이디어 ===== -->
+    <!-- ===== 16: 아이디어 구상 ===== -->
     <div class="slide">
-      <div class="part-badge blue">PART 5 · 아이디어 구상</div>
+      <div class="part-badge blue">아이디어 구상</div>
       <h2>2강에서 <span class="highlight">직접 만들</span> 것 정하기</h2>
       <ul class="slide-list">
         <li><span class="icon">💼</span><div><strong>사업용</strong><span class="desc">내 가게/서비스 랜딩페이지, 예약 시스템, 소개 사이트</span></div></li>
@@ -379,16 +441,42 @@
         <li><span class="icon">🎨</span><div><strong>포트폴리오</strong><span class="desc">개인 포트폴리오, 이력서 사이트, 작업물 갤러리</span></div></li>
         <li><span class="icon">💡</span><div><strong>사이드 프로젝트</strong><span class="desc">커뮤니티, 정보 큐레이션, 취미 프로젝트</span></div></li>
       </ul>
-      <div class="practice-box" style="margin-top: 20px;">
+      <div class="practice-box" style="margin-top: 16px;">
         <div class="label">Claude에게 상담받기</div>
         <div class="quote">"나는 OO인데, OO 서비스를 만들고 싶어. 어떤 페이지가 필요할까?"</div>
       </div>
     </div>
 
-    <!-- ===== 슬라이드 20: 숙제 ===== -->
+    <!-- ===== 17: 오늘 정리 ===== -->
     <div class="slide">
-      <div class="part-badge blue">PART 5 · 다음 주까지</div>
-      <h2>2강 전 준비사항</h2>
+      <div class="part-badge">마무리</div>
+      <h2>오늘 가져가는 것</h2>
+      <ul class="slide-list">
+        <li><span class="icon">1️⃣</span><div><strong>Claude Desktop 설치 & 기본 사용법</strong><span class="desc">내 컴퓨터에서 AI가 직접 파일을 다루는 체험</span></div></li>
+        <li><span class="icon">2️⃣</span><div><strong>사이트 분석 리포트</strong><span class="desc">URL 하나로 전문 분석 보고서 자동 생성</span></div></li>
+        <li><span class="icon">3️⃣</span><div><strong>나만의 업무 비서</strong><span class="desc">여러 작업을 조합한 자동화 결과물</span></div></li>
+        <li><span class="icon">4️⃣</span><div><strong>2강에서 만들 서비스 아이디어</strong><span class="desc">다음 주에 진짜 웹사이트로 만들어서 배포합니다</span></div></li>
+      </ul>
+    </div>
+
+    <!-- ===== 18: 2강 안내 ===== -->
+    <div class="slide">
+      <div class="part-badge teal">다음 시간 안내</div>
+      <h1>2강 · 만든 걸<br><span class="highlight">세상에 내보내기</span></h1>
+      <p class="big">오늘 구상한 아이디어를<br>실제 웹사이트로 만들고, 전 세계에 배포합니다</p>
+      <div class="announce-card">
+        <div class="row"><span class="icon">📅</span> 2026년 4월 8일 (수) 오후 7시</div>
+        <div class="row"><span class="icon">📍</span> 누리꿈스퀘어 연구개발타워 6층 중회의실</div>
+        <div class="row"><span class="icon">⏱️</span> 2시간 (19:00 ~ 21:00)</div>
+        <div class="row"><span class="icon">💻</span> 준비물: 노트북, GitHub/Vercel 가입, 아이디어</div>
+        <div class="price">참가비: 1인 50,000원</div>
+      </div>
+    </div>
+
+    <!-- ===== 19: 2강 사전 준비 ===== -->
+    <div class="slide">
+      <div class="part-badge teal">2강 전 준비사항</div>
+      <h2>다음 주까지 해오세요</h2>
       <ul class="slide-list">
         <li><span class="icon">✅</span><div><strong>만들 서비스 아이디어 1개 확정</strong><span class="desc">어떤 페이지를 만들지, 누가 볼 건지 생각해오세요</span></div></li>
         <li><span class="icon">✅</span><div><strong>GitHub 가입</strong><span class="desc">github.com — 코드 저장소 (무료)</span></div></li>
@@ -397,27 +485,7 @@
       <p class="sub" style="margin-top: 24px;">모르시면 Claude에게 물어보셔도 됩니다 😄</p>
     </div>
 
-    <!-- ===== 슬라이드 21: 오늘 정리 ===== -->
-    <div class="slide">
-      <div class="part-badge">PART 6 · 마무리</div>
-      <h2>오늘 가져가는 것</h2>
-      <ul class="slide-list">
-        <li><span class="icon">1️⃣</span><div><strong>Claude 앱으로 업무 데이터 처리하는 경험</strong><span class="desc">회의록, 매출, 이미지 → AI가 바로 분석</span></div></li>
-        <li><span class="icon">2️⃣</span><div><strong>Claude Code 설치 & 기본 사용법</strong><span class="desc">내 컴퓨터에서 AI가 직접 파일을 다루는 체험</span></div></li>
-        <li><span class="icon">3️⃣</span><div><strong>AI로 만든 결과물 3개</strong><span class="desc">대시보드 + 분석 보고서 + 업무 비서 HTML</span></div></li>
-        <li><span class="icon">4️⃣</span><div><strong>2강에서 만들 서비스 아이디어</strong><span class="desc">다음 주에 진짜 웹사이트로 만들어서 배포합니다</span></div></li>
-      </ul>
-    </div>
-
-    <!-- ===== 슬라이드 22: 2강 예고 ===== -->
-    <div class="slide">
-      <div class="part-badge teal">다음 시간 예고</div>
-      <h1>2강 · 만든 걸<br><span class="highlight">세상에 내보내기</span></h1>
-      <p class="big">오늘 구상한 아이디어를<br>실제 웹사이트로 만들고, 전 세계에 배포합니다</p>
-      <p class="sub" style="margin-top: 24px;">2026.04.08 (화) 19:00 · 누리꿈스퀘어 7층</p>
-    </div>
-
-    <!-- ===== 슬라이드 23: 감사 ===== -->
+    <!-- ===== 20: 감사 ===== -->
     <div class="slide">
       <h1>감사합니다 🙏</h1>
       <p class="big">질문 있으시면 편하게 물어보세요!</p>
@@ -429,7 +497,7 @@
   <!-- 네비게이션 -->
   <div class="slide-nav">
     <button id="prevBtn" onclick="changeSlide(-1)">← 이전</button>
-    <span class="slide-counter" id="slideCounter">1 / 23</span>
+    <span class="slide-counter" id="slideCounter">1 / 20</span>
     <button id="nextBtn" onclick="changeSlide(1)">다음 →</button>
   </div>
   <div class="key-hint">← → 방향키 또는 스페이스바</div>
@@ -458,7 +526,6 @@
       if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
     });
 
-    // 터치 스와이프
     let touchStartX = 0;
     document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; });
     document.addEventListener('touchend', e => {
