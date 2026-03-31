@@ -179,6 +179,13 @@
     .slide-counter { font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.4); }
     .progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(135deg, #6C5CE7, #00B4B5); z-index: 101; transition: width 0.3s; }
     .key-hint { position: fixed; bottom: 70px; right: 40px; z-index: 100; font-size: 0.75rem; color: rgba(255,255,255,0.2); }
+    .home-btn {
+      position: fixed; top: 20px; left: 24px; z-index: 100;
+      padding: 8px 18px; border-radius: 10px; font-size: 0.85rem; font-weight: 700;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.5); text-decoration: none; transition: all 0.2s;
+    }
+    .home-btn:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
     /* 김비서 2열 레이아웃 */
     .split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; max-width: 950px; margin: 0 auto; text-align: left; }
@@ -201,6 +208,7 @@
 </head>
 <body>
 
+  <a href="index.html" class="home-btn">← 홈으로</a>
   <div class="progress-bar" id="progressBar"></div>
 
   <div class="slide-wrap" id="slideWrap">
