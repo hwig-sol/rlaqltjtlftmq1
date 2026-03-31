@@ -29,12 +29,49 @@
     .form-group input:focus, .form-group select:focus {
       outline: none; border-color: var(--primary);
     }
+
+    /* 인원 선택 */
+    .count-row { display: flex; align-items: center; gap: 16px; }
+    .count-btn {
+      width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-size: 1.2rem; font-weight: 700;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.2s;
+    }
+    .count-btn:hover { border-color: var(--primary); }
+    .count-display {
+      font-size: 1.4rem; font-weight: 800; color: var(--primary); min-width: 36px; text-align: center;
+    }
+    .count-hint { font-size: 0.8rem; color: var(--text-muted); margin-left: 8px; }
+
+    /* 잔여석 표시 */
+    .seat-info {
+      display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .seat-badge {
+      display: flex; align-items: center; gap: 8px; padding: 8px 16px;
+      border-radius: 10px; font-size: 0.85rem; font-weight: 600;
+      background: var(--bg); border: 1px solid var(--border);
+    }
+    .seat-badge .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+    }
+    .seat-badge .count { font-weight: 800; }
+    .seat-badge.full { opacity: 0.5; }
+    .seat-badge.full .count { color: var(--color-4); }
+
     .form-submit {
       width: 100%; padding: 16px; border-radius: 12px; font-size: 1rem; font-weight: 700;
       background: var(--gradient); color: #fff; border: none; cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s; margin-top: 8px;
     }
     .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(108,92,231,0.3); }
+
+    .cancel-note {
+      text-align: center; margin-top: 16px; padding: 12px;
+      font-size: 0.8rem; color: var(--text-muted);
+      background: var(--bg); border-radius: 10px;
+    }
 
     .section-divider {
       text-align: center; margin: 40px 0 24px; position: relative;
@@ -49,8 +86,24 @@
       letter-spacing: 2px; text-transform: uppercase;
     }
 
+    /* 캘린더 툴팁 */
+    .cal-day { position: relative; }
+    .cal-tooltip {
+      display: none; position: absolute; bottom: calc(100% + 8px); left: 50%;
+      transform: translateX(-50%); white-space: nowrap; z-index: 10;
+      background: #1E1B3A; color: #fff; padding: 8px 14px; border-radius: 8px;
+      font-size: 0.78rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      pointer-events: none;
+    }
+    .cal-tooltip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+      border: 5px solid transparent; border-top-color: #1E1B3A;
+    }
+    .cal-day.has-event:hover .cal-tooltip { display: block; }
+
     @media (max-width: 768px) {
       .apply-box { padding: 32px 24px; }
+      .seat-info { flex-direction: column; }
     }
   </style>
 </head>
@@ -75,6 +128,9 @@
     </div>
 
     <div class="apply-box">
+      <!-- 잔여석 현황 -->
+      <div class="seat-info" id="seatInfo"></div>
+
       <form id="applyForm" onsubmit="handleApply(event)">
         <div class="form-group">
           <label>이름</label>
@@ -85,22 +141,32 @@
           <input type="tel" placeholder="010-0000-0000" required>
         </div>
         <div class="form-group">
-          <label>이메일</label>
-          <input type="email" placeholder="example@email.com" required>
-        </div>
-        <div class="form-group">
           <label>신청 회차</label>
-          <select required>
+          <select id="lectureSelect" required>
             <option value="">선택해 주세요</option>
             <option value="all">전체 (1~4강)</option>
             <option value="1">1강 — 4/1(화) 내 컴퓨터에 AI 개발자 앉히기</option>
-            <option value="2">2강 — 4/8(화) 만든 걸 세상에 내보내기</option>
+            <option value="2">2강 — 4/8(수) 만든 걸 세상에 내보내기</option>
             <option value="3">3강 — 외부 세계와 연결하기</option>
             <option value="4">4강 — 혼자서도, 함께도 계속 만들기</option>
           </select>
         </div>
+        <div class="form-group">
+          <label>신청 인원</label>
+          <div class="count-row">
+            <button type="button" class="count-btn" onclick="changeCount(-1)">−</button>
+            <span class="count-display" id="countDisplay">1</span>
+            <button type="button" class="count-btn" onclick="changeCount(1)">+</button>
+            <span class="count-hint">최대 잔여석까지 신청 가능</span>
+          </div>
+        </div>
         <button type="submit" class="form-submit">신청하기</button>
       </form>
+
+      <div class="cancel-note">
+        취소는 관리자에게 연락 부탁드립니다<br>
+        오픈카톡 · 전화 · psol@hellovr.kr
+      </div>
     </div>
 
     <div class="section-divider"><span>📅 강의 일정</span></div>
@@ -114,19 +180,121 @@
   </footer>
 
   <script>
-    function handleApply(e) {
-      e.preventDefault();
-      alert('신청이 완료되었습니다! 확인 후 안내 드리겠습니다.');
-      e.target.reset();
+    const MAX_SEATS = 15;
+
+    // 강의별 예약 현황 (실제로는 서버/DB 연동 필요 — 지금은 로컬 데모)
+    const SEAT_KEY = 'vibecoding_seats';
+    function getSeats() {
+      const saved = localStorage.getItem(SEAT_KEY);
+      if (saved) return JSON.parse(saved);
+      return { '1': 0, '2': 0, '3': 0, '4': 0 };
     }
+    function saveSeats(seats) { localStorage.setItem(SEAT_KEY, JSON.stringify(seats)); }
 
     const EVENTS = {
-      '2026-04-01': { label: '1강', bg: 'rgba(108,92,231,0.12)', color: '#6C5CE7', textColor: '#6C5CE7' },
-      '2026-04-08': { label: '2강', bg: 'rgba(0,180,181,0.12)', color: '#00B4B5', textColor: '#00B4B5' },
+      '2026-04-01': { num: '1', label: '1강', bg: 'rgba(108,92,231,0.12)', color: '#6C5CE7', textColor: '#6C5CE7' },
+      '2026-04-08': { num: '2', label: '2강', bg: 'rgba(0,180,181,0.12)', color: '#00B4B5', textColor: '#00B4B5' },
     };
 
+    const LECTURE_COLORS = {
+      '1': { name: '1강', color: '#6C5CE7' },
+      '2': { name: '2강', color: '#00B4B5' },
+      '3': { name: '3강', color: '#E8A317' },
+      '4': { name: '4강', color: '#2563EB' },
+    };
+
+    // 잔여석 표시
+    function renderSeatInfo() {
+      const seats = getSeats();
+      const container = document.getElementById('seatInfo');
+      container.innerHTML = '';
+      for (const [num, info] of Object.entries(LECTURE_COLORS)) {
+        const booked = seats[num] || 0;
+        const remain = MAX_SEATS - booked;
+        const isFull = remain <= 0;
+        const badge = document.createElement('div');
+        badge.className = 'seat-badge' + (isFull ? ' full' : '');
+        badge.innerHTML = `
+          <span class="dot" style="background:${info.color}"></span>
+          ${info.name}
+          <span class="count" style="color:${isFull ? '' : info.color}">${booked}/${MAX_SEATS}</span>
+          ${isFull ? '<span style="font-size:0.75rem;color:var(--color-4);">마감</span>' : ''}
+        `;
+        container.appendChild(badge);
+      }
+    }
+
+    // 인원 카운터
+    let applyCount = 1;
+    function changeCount(delta) {
+      const next = applyCount + delta;
+      if (next < 1) return;
+
+      // 선택된 강의의 잔여석 확인
+      const sel = document.getElementById('lectureSelect').value;
+      const seats = getSeats();
+      if (sel && sel !== 'all') {
+        const remain = MAX_SEATS - (seats[sel] || 0);
+        if (next > remain) return;
+      } else if (sel === 'all') {
+        const minRemain = Math.min(...Object.values(seats).map(b => MAX_SEATS - b));
+        if (next > minRemain) return;
+      } else {
+        if (next > MAX_SEATS) return;
+      }
+
+      applyCount = next;
+      document.getElementById('countDisplay').textContent = applyCount;
+    }
+
+    // 강의 변경 시 인원 리셋
+    document.getElementById('lectureSelect').addEventListener('change', () => {
+      applyCount = 1;
+      document.getElementById('countDisplay').textContent = 1;
+    });
+
+    // 신청 처리
+    function handleApply(e) {
+      e.preventDefault();
+      const sel = document.getElementById('lectureSelect').value;
+      if (!sel) return;
+
+      const seats = getSeats();
+
+      if (sel === 'all') {
+        for (let i = 1; i <= 4; i++) {
+          if ((seats[String(i)] || 0) + applyCount > MAX_SEATS) {
+            alert(`${i}강의 잔여석이 부족합니다. (잔여: ${MAX_SEATS - seats[String(i)]}명)`);
+            return;
+          }
+        }
+        for (let i = 1; i <= 4; i++) {
+          seats[String(i)] = (seats[String(i)] || 0) + applyCount;
+        }
+      } else {
+        if ((seats[sel] || 0) + applyCount > MAX_SEATS) {
+          alert(`잔여석이 부족합니다. (잔여: ${MAX_SEATS - seats[sel]}명)`);
+          return;
+        }
+        seats[sel] = (seats[sel] || 0) + applyCount;
+      }
+
+      saveSeats(seats);
+      renderSeatInfo();
+      buildCalendar(document.getElementById('applyCalendar'), curYear, curMonth);
+
+      const countText = applyCount > 1 ? ` (${applyCount}명)` : '';
+      alert(`신청이 완료되었습니다!${countText}\n확인 후 안내 드리겠습니다.`);
+      e.target.reset();
+      applyCount = 1;
+      document.getElementById('countDisplay').textContent = 1;
+    }
+
+    // 캘린더
     function buildCalendar(container, year, month) {
       const months = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+      const seats = getSeats();
+
       container.innerHTML = `
         <div class="calendar-header">
           <h3>${year}년 ${months[month]}</h3>
@@ -166,10 +334,15 @@
 
         if (EVENTS[dateStr]) {
           const ev = EVENTS[dateStr];
+          const booked = seats[ev.num] || 0;
+          const remain = MAX_SEATS - booked;
           el.classList.add('has-event');
           el.style.background = ev.bg;
           el.style.color = ev.textColor;
-          el.innerHTML = d + '<span class="event-dot" style="background:' + ev.color + '"></span><span class="event-label" style="color:' + ev.color + '">' + ev.label + '</span>';
+          el.innerHTML = d
+            + '<span class="event-dot" style="background:' + ev.color + '"></span>'
+            + '<span class="event-label" style="color:' + ev.color + '">' + ev.label + '</span>'
+            + '<span class="cal-tooltip">' + ev.label + ' 잔여: ' + remain + '명</span>';
         } else {
           el.textContent = d;
         }
@@ -184,6 +357,8 @@
       if (curMonth < 0) { curMonth = 11; curYear--; }
       buildCalendar(document.getElementById('applyCalendar'), curYear, curMonth);
     }
+
+    renderSeatInfo();
     buildCalendar(document.getElementById('applyCalendar'), curYear, curMonth);
   </script>
 </body>
